@@ -6,6 +6,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "DismembermentSKMComponent.generated.h"
 
+struct FLimbGroupData;
 /**
  * 
  */
@@ -13,5 +14,26 @@ UCLASS()
 class DISMEMBERMENTDEMO_API UDismembermentSKMComponent : public USkeletalMeshComponent
 {
 	GENERATED_BODY()
+
+protected:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dismemberment")
+	TArray<FString> ValidNameSubstrings;
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dismemberment")
+	TArray<FString> InvalidNameSubstrings;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dismemberment")
+	TArray<FLimbGroupData> Limbs;
+
 	
+	UFUNCTION(BlueprintCallable, Category = "Dismemberment")
+	void FillSuggestedBoneNames();
+
+	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
+	int GetLimbIndexFromBoneName(FName Bone);
+	
+	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
+	void Handle_LimbHit(FName HitBoneName, float Damage);
+
+	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
+	void Handle_LimbRepair(int LimbIndex);
 };
