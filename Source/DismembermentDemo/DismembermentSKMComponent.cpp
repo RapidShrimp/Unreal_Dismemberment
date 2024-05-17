@@ -1,10 +1,18 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DismembermentSKMComponent.h"
 
+#include "DismembermentSKMComponent.h"
+#include "NiagaraComponent.h"
 #include "SkeletonDataAsset.h"
 #include "Structs/LimbGroupData.h"
+
+
+UDismembermentSKMComponent::UDismembermentSKMComponent()
+{
+	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>("Spawner",false);
+	//NiagaraComponent->SetupAttachment(SkeletalMesh);
+}
 
 void UDismembermentSKMComponent::InitialiseBones()
 {
@@ -12,38 +20,6 @@ void UDismembermentSKMComponent::InitialiseBones()
 		return;
 	SetSkeletalMeshAsset(SkeletonData->SkeletalMesh);
 	Limbs = SkeletonData->Limbs;
-}
-
-void UDismembermentSKMComponent::FillSuggestedBoneNames()
-{
-	TArray<FName> BoneNames;
-	GetBoneNames(BoneNames);
-
-	FLimbGroupData FoundLimb;
-	for (FName Bone : BoneNames) //Check ALL Bones Against Substrings, Add them if a substring matches
-	{
-		bool bIsValid = false;
-
-		for (FString ValidName : ValidNameSubstrings)
-			if(Bone.ToString().ToLower().Contains(ValidName) )
-			{
-				bIsValid = true;
-			}
-		for (FString InvalidSubstring : InvalidNameSubstrings)
-			if(Bone.ToString().ToLower().Contains(InvalidSubstring))
-			{
-				bIsValid = false;
-			}
-
-		if(bIsValid)
-		{
-			FoundLimb.LimbRootName = Bone;
-			FoundLimb.HasDetached = false;
-			FoundLimb.LimbCurrentHealth = 50;
-			FoundLimb.LimbMaxHealth = 50;
-			Limbs.Add(FoundLimb);
-		}
-	}
 }
 
 int UDismembermentSKMComponent::GetLimbIndexFromBoneName(FName Bone)
@@ -78,7 +54,7 @@ void UDismembermentSKMComponent::Handle_LimbHit(FName HitBoneName, float Damage)
 	if(!Limbs[LimbIndex].LimbCurrentHealth == 0)
 		return;
 	
-	//TODO Spawn Mesh of limb
+	
 	
 	//Detach Limb Forever OR Detach for Repair
 	if(Limbs[LimbIndex].CurrentRepairs >= Limbs[LimbIndex].MaxRepairs)
@@ -93,7 +69,12 @@ void UDismembermentSKMComponent::Handle_LimbHit(FName HitBoneName, float Damage)
 		FBoneTransform NewTransform;
 		NewTransform.Transform.SetLocation(FVector{0,0,0});
 	}
+
+	
+	//TODO Spawn Mesh, Particles, & Limb Phys Constraints
+	SpawnParticlesAtLocation(GetBoneLocation(Limbs[LimbIndex].LimbRootName));
 	UE_LOG(LogTemp,Warning,TEXT("%s"), *GetBoneLocation(Limbs[LimbIndex].LimbRootName).ToString());
+
 }
 
 void UDismembermentSKMComponent::Handle_LimbRepair(int LimbIndex)
@@ -105,9 +86,13 @@ void UDismembermentSKMComponent::Handle_LimbRepair(int LimbIndex)
 	Limbs[LimbIndex].CurrentRepairs += 1;
 	Limbs[LimbIndex].HasDetached = false;
 	
-	UnHideBoneByName(Limbs[0].LimbRootName);
+	UnHideBoneByName(Limbs[LimbIndex].LimbRootName);
+		
+}
 
-	//TODO Physics Needs to be Rebuilt
-	
+void UDismembermentSKMComponent::SpawnParticlesAtLocation(FVector RelativeToMesh)
+{
+	NiagaraComponent->SetAsset(SkeletonData->ParticleSystem,true);
+	NiagaraComponent->SetRelativeLocation(RelativeToMesh);
 }
 

@@ -5,7 +5,9 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "Structs/LimbGroupData.h"
+#include "NiagaraComponent.h"
 #include "SkeletonDataAsset.generated.h"
+
 
 /**
  * 
@@ -19,7 +21,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Dismemberment")
 	TObjectPtr<USkeletalMesh> SkeletalMesh;
 	UPROPERTY(EditDefaultsOnly, Category = "Dismemberment")
-	TObjectPtr<UParticleSystem> ParticleSystem;
+	TObjectPtr<UNiagaraSystem> ParticleSystem;
 	UPROPERTY(EditDefaultsOnly, Category = "Dismemberment")
 	TArray<FLimbGroupData> Limbs;
 };

@@ -6,6 +6,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "DismembermentSKMComponent.generated.h"
 
+class UNiagaraComponent;
 class USkeletonDataAsset;
 struct FLimbGroupData;
 /**
@@ -17,11 +18,10 @@ class DISMEMBERMENTDEMO_API UDismembermentSKMComponent : public USkeletalMeshCom
 	GENERATED_BODY()
 
 protected:
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dismemberment")
-	TArray<FString> ValidNameSubstrings;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dismemberment")
-	TArray<FString> InvalidNameSubstrings;
+	UDismembermentSKMComponent();
+	
+	UPROPERTY(EditAnywhere, Category = "Dismemberment")
+	TObjectPtr<UNiagaraComponent> NiagaraComponent;
 	
 	UPROPERTY(EditAnywhere, Category = "Dismemberment")
 	TObjectPtr<USkeletonDataAsset> SkeletonData;
@@ -31,9 +31,6 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void InitialiseBones();
-	
-	UFUNCTION(BlueprintCallable, Category = "Dismemberment")
-	void FillSuggestedBoneNames();
 
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	int GetLimbIndexFromBoneName(FName Bone);
@@ -43,4 +40,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	void Handle_LimbRepair(int LimbIndex);
+
+	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
+	void SpawnParticlesAtLocation(FVector Location);
 };

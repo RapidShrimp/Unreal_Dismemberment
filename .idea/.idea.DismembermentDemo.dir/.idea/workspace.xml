@@ -8,16 +8,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8cd76d73-756f-42ab-a524-99e55638f1d0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Content/DismembermentTest/DataAssets/TestDummyData.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/DismembermentDemo/Enums/LimbTypes.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/DismembermentDemo/SkeletonDataAsset.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/DismembermentDemo/SkeletonDataAsset.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/DismembermentDemo/MyClass.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/DismembermentDemo/MyClass.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/DismembermentTest/DataAssets/TestDummyData.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/DismembermentTest/DataAssets/TestDummyData.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/DismembermentTest/TestDummy.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/DismembermentTest/TestDummy.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/D/DT/OH1V3RVPWDDTZCYCJ3RBBW.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/C/ZV/0D0XGFU4BGM9AOJYRE73JD.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/E/J0/7VPJFAOX1H6FH7IW68IFQJ.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/DismembermentTest/VFX/NS_Bleed.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/DismembermentTest/VFX/NS_Bleed.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/C/ZV/0D0XGFU4BGM9AOJYRE73JD.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/C/ZV/0D0XGFU4BGM9AOJYRE73JD.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/DismembermentSKMComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DismembermentDemo/DismembermentSKMComponent.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/DismembermentSKMComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DismembermentDemo/DismembermentSKMComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/LimbGroupData.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DismembermentDemo/Structs/LimbGroupData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/SkeletonDataAsset.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DismembermentDemo/SkeletonDataAsset.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +131,7 @@
       <option name="presentableId" value="Default" />
       <updated>1715964416376</updated>
       <workItem from="1715964418221" duration="248000" />
-      <workItem from="1715964767604" duration="7613000" />
+      <workItem from="1715964767604" duration="10149000" />
     </task>
     <servers />
   </component>
