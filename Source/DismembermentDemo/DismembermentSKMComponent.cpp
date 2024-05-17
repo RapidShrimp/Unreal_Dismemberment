@@ -6,6 +6,7 @@
 #include "NiagaraComponent.h"
 #include "SkeletonDataAsset.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Kismet/GameplayStatics.h"
 #include "Structs/LimbGroupData.h"
 
 
@@ -55,8 +56,6 @@ void UDismembermentSKMComponent::Handle_LimbHit(FName HitBoneName, float Damage)
 	if(!Limbs[LimbIndex].LimbCurrentHealth == 0)
 		return;
 	
-	
-	
 	//Detach Limb Forever OR Detach for Repair
 	if(Limbs[LimbIndex].CurrentRepairs >= Limbs[LimbIndex].MaxRepairs)
 	{
@@ -73,7 +72,15 @@ void UDismembermentSKMComponent::Handle_LimbHit(FName HitBoneName, float Damage)
 
 	
 	//TODO Spawn Mesh, Particles, & Limb Phys Constraints
-	SpawnParticlesAtLocation(GetBoneLocation(Limbs[LimbIndex].LimbRootName));
+
+	//Mesh
+	
+	//PhysConstraints
+	
+	//Particles
+	FVector BoneLoc = GetBoneLocation(Limbs[LimbIndex].LimbRootName);
+	FRotator BoneRot = GetBoneTransform(GetBoneIndex(GetParentBone(Limbs[LimbIndex].LimbRootName))).Rotator();
+	SpawnParticlesAtLocation(BoneLoc,BoneRot);
 
 }
 
@@ -90,9 +97,9 @@ void UDismembermentSKMComponent::Handle_LimbRepair(int LimbIndex)
 		
 }
 
-void UDismembermentSKMComponent::SpawnParticlesAtLocation(FVector RelativeToMesh)
+void UDismembermentSKMComponent::SpawnParticlesAtLocation(FVector RelativeToMesh, FRotator InRelativeRotation)
 {
-	UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, RelativeToMesh, FRotator(0.f), EAttachLocation::Type::KeepRelativeOffset, true);
+	UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, RelativeToMesh, FRotator::ZeroRotator, EAttachLocation::Type::KeepRelativeOffset, true);
 	UE_LOG(LogTemp,Warning,TEXT("%s"), *RelativeToMesh.ToString());
 
 }

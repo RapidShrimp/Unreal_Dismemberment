@@ -42,5 +42,5 @@ protected:
 	void Handle_LimbRepair(int LimbIndex);
 
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
-	void SpawnParticlesAtLocation(FVector Location);
+	void SpawnParticlesAtLocation(FVector RelativeToMesh, FRotator InRelativeRotation);
 };
