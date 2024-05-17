@@ -7,13 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8cd76d73-756f-42ab-a524-99e55638f1d0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/DismembermentTest/TestDummy.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/DismembermentTest/TestDummy.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/C/ZV/0D0XGFU4BGM9AOJYRE73JD.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/C/ZV/0D0XGFU4BGM9AOJYRE73JD.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/DismembermentSKMComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DismembermentDemo/DismembermentSKMComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/DismembermentSKMComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DismembermentDemo/DismembermentSKMComponent.h" afterDir="false" />
-    </list>
+    <list default="true" id="8cd76d73-756f-42ab-a524-99e55638f1d0" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -129,7 +123,7 @@
       <option name="presentableId" value="Default" />
       <updated>1715964416376</updated>
       <workItem from="1715964418221" duration="248000" />
-      <workItem from="1715964767604" duration="14949000" />
+      <workItem from="1715964767604" duration="15257000" />
     </task>
     <servers />
   </component>
