@@ -19,7 +19,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dismemberment")
 	TArray<FString> ValidNameSubstrings;
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dismemberment")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dismemberment")
 	TArray<FString> InvalidNameSubstrings;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dismemberment")
 	TArray<FLimbGroupData> Limbs;

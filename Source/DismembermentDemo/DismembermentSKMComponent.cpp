@@ -90,7 +90,7 @@ void UDismembermentSKMComponent::Handle_LimbRepair(int LimbIndex)
 	
 	UnHideBoneByName(Limbs[0].LimbRootName);
 
-	//Physics Needs to be Rebuilt
+	//TODO Physics Needs to be Rebuilt
 	
 }
 
