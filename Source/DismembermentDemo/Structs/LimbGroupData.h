@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DismembermentDemo/Enums/LimbTypes.h"
 #include "UObject/Object.h"
 #include "LimbGroupData.generated.h"
 
@@ -14,18 +15,27 @@ struct FLimbGroupData
 {
  GENERATED_BODY()
 
+ //Asset Visual & Audio Data
+ UPROPERTY(EditAnywhere)
+ TObjectPtr<UStaticMesh> LimbMesh;
+ UPROPERTY(EditAnywhere)
+ E_LimbTypes LimbType = E_LimbTypes::None;
+ 
  UPROPERTY(EditAnywhere)
  FName LimbRootName = "NULL";
-
+ 
+ //Health
  float LimbCurrentHealth = 40.0f;
  UPROPERTY(EditAnywhere)
  float LimbMaxHealth = LimbCurrentHealth;
- 
  int CurrentRepairs = 0;
  UPROPERTY(EditAnywhere)
  int MaxRepairs = 1;
- 
+
+ //Physics
  UPROPERTY(VisibleAnywhere)
  bool HasDetached = false;
+ UPROPERTY(EditDefaultsOnly)
+ bool bUseTetherPhysics;
  
 };

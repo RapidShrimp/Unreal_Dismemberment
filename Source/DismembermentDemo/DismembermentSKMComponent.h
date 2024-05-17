@@ -6,6 +6,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "DismembermentSKMComponent.generated.h"
 
+class USkeletonDataAsset;
 struct FLimbGroupData;
 /**
  * 
@@ -21,9 +22,15 @@ protected:
 	TArray<FString> ValidNameSubstrings;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dismemberment")
 	TArray<FString> InvalidNameSubstrings;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dismemberment")
+	
+	UPROPERTY(EditAnywhere, Category = "Dismemberment")
+	TObjectPtr<USkeletonDataAsset> SkeletonData;
+
+	UPROPERTY(VisibleAnywhere, Category = "Dismemberment")
 	TArray<FLimbGroupData> Limbs;
 
+	UFUNCTION(BlueprintCallable)
+	void InitialiseBones();
 	
 	UFUNCTION(BlueprintCallable, Category = "Dismemberment")
 	void FillSuggestedBoneNames();

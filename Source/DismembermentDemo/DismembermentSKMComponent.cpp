@@ -2,7 +2,17 @@
 
 
 #include "DismembermentSKMComponent.h"
-#include "LimbGroupData.h"
+
+#include "SkeletonDataAsset.h"
+#include "Structs/LimbGroupData.h"
+
+void UDismembermentSKMComponent::InitialiseBones()
+{
+	if(!SkeletonData)
+		return;
+	SetSkeletalMeshAsset(SkeletonData->SkeletalMesh);
+	Limbs = SkeletonData->Limbs;
+}
 
 void UDismembermentSKMComponent::FillSuggestedBoneNames()
 {
@@ -69,19 +79,26 @@ void UDismembermentSKMComponent::Handle_LimbHit(FName HitBoneName, float Damage)
 		return;
 	
 	//TODO Spawn Mesh of limb
-	HideBoneByName(Limbs[LimbIndex].LimbRootName,PBO_None);
 	
-	//Detach Limb Forever
+	//Detach Limb Forever OR Detach for Repair
 	if(Limbs[LimbIndex].CurrentRepairs >= Limbs[LimbIndex].MaxRepairs)
 	{
+		HideBoneByName(Limbs[LimbIndex].LimbRootName,PBO_Term);
 		Limbs[LimbIndex].HasDetached = true;
 		UE_LOG(LogTemp,Error,TEXT("LIMB IS SEVERED"));
-	} 
+	}
+	else
+	{
+		HideBoneByName(Limbs[LimbIndex].LimbRootName,PBO_None);
+		FBoneTransform NewTransform;
+		NewTransform.Transform.SetLocation(FVector{0,0,0});
+	}
+	UE_LOG(LogTemp,Warning,TEXT("%s"), *GetBoneLocation(Limbs[LimbIndex].LimbRootName).ToString());
 }
 
 void UDismembermentSKMComponent::Handle_LimbRepair(int LimbIndex)
 {
-	if(!Limbs.IsValidIndex(LimbIndex) || !Limbs[LimbIndex].HasDetached)
+	if(!Limbs.IsValidIndex(LimbIndex) || Limbs[LimbIndex].HasDetached)
 		return;
 	
 	Limbs[LimbIndex].LimbCurrentHealth += 10;
