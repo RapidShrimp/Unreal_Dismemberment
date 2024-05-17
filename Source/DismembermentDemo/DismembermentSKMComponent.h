@@ -20,7 +20,7 @@ class DISMEMBERMENTDEMO_API UDismembermentSKMComponent : public USkeletalMeshCom
 protected:
 	UDismembermentSKMComponent();
 	
-	UPROPERTY(EditAnywhere, Category = "Dismemberment")
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite, Category = "Dismemberment")
 	TObjectPtr<UNiagaraComponent> NiagaraComponent;
 	
 	UPROPERTY(EditAnywhere, Category = "Dismemberment")
@@ -28,7 +28,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Dismemberment")
 	TArray<FLimbGroupData> Limbs;
-
+	
 	UFUNCTION(BlueprintCallable)
 	void InitialiseBones();
 

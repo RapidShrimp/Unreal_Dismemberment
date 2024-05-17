@@ -5,13 +5,14 @@
 #include "DismembermentSKMComponent.h"
 #include "NiagaraComponent.h"
 #include "SkeletonDataAsset.h"
+#include "NiagaraFunctionLibrary.h"
 #include "Structs/LimbGroupData.h"
 
 
 UDismembermentSKMComponent::UDismembermentSKMComponent()
 {
 	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>("Spawner",false);
-	//NiagaraComponent->SetupAttachment(SkeletalMesh);
+	NiagaraComponent->SetupAttachment(GetAttachmentRoot());
 }
 
 void UDismembermentSKMComponent::InitialiseBones()
@@ -73,7 +74,6 @@ void UDismembermentSKMComponent::Handle_LimbHit(FName HitBoneName, float Damage)
 	
 	//TODO Spawn Mesh, Particles, & Limb Phys Constraints
 	SpawnParticlesAtLocation(GetBoneLocation(Limbs[LimbIndex].LimbRootName));
-	UE_LOG(LogTemp,Warning,TEXT("%s"), *GetBoneLocation(Limbs[LimbIndex].LimbRootName).ToString());
 
 }
 
@@ -92,7 +92,8 @@ void UDismembermentSKMComponent::Handle_LimbRepair(int LimbIndex)
 
 void UDismembermentSKMComponent::SpawnParticlesAtLocation(FVector RelativeToMesh)
 {
-	NiagaraComponent->SetAsset(SkeletonData->ParticleSystem,true);
-	NiagaraComponent->SetRelativeLocation(RelativeToMesh);
+	UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, RelativeToMesh, FRotator(0.f), EAttachLocation::Type::KeepRelativeOffset, true);
+	UE_LOG(LogTemp,Warning,TEXT("%s"), *RelativeToMesh.ToString());
+
 }
 
