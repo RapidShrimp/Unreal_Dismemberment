@@ -6,6 +6,7 @@
 #include "NiagaraComponent.h"
 #include "SkeletonDataAsset.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Engine/StaticMeshActor.h"
 #include "Kismet/GameplayStatics.h"
 #include "Structs/LimbGroupData.h"
 
@@ -65,17 +66,26 @@ void UDismembermentSKMComponent::Handle_LimbHit(FName HitBoneName, float Damage)
 		Limbs[LimbIndex].HasDetached = true;
 
 	
-	//Todo Spawn Mesh
-	/*
-	 LimbMesh = SpawnActorFromClass()
-	 CreateTimer->
-	 OnTimerComplete-> DeleteLimbMesh
-	 */
+	FTransform BoneTrans = GetBoneTransform(GetBoneIndex(Limbs[LimbIndex].LimbRootName));
+
+	//Spawn Mesh
+	AStaticMeshActor* LimbMesh = GetWorld()->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass());
+	LimbMesh->SetMobility(EComponentMobility::Movable);
+	LimbMesh->SetActorLocation(BoneTrans.GetLocation());
+	UStaticMeshComponent* MeshComponent = LimbMesh->GetStaticMeshComponent();
+	if(MeshComponent)
+	{
+		MeshComponent->SetStaticMesh(Limbs[LimbIndex].LimbMesh);
+		MeshComponent->SetSimulatePhysics(true);
+	}
 	
 	//Todo Spawn Particles
-	FTransform BoneTrans = GetBoneTransform(GetBoneIndex(Limbs[LimbIndex].LimbRootName));
 	SpawnParticles(BoneTrans);
 
+	//Todo Setup Tether Constraints
+
+	//Todo Rope Renderer
+	
 }
 
 void UDismembermentSKMComponent::Handle_LimbRepair(int LimbIndex)
