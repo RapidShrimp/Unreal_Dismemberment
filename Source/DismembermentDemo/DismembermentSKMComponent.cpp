@@ -48,6 +48,7 @@ int UDismembermentSKMComponent::GetLimbIndexFromBoneName(FName Bone)
 void UDismembermentSKMComponent::Handle_LimbHit(FName HitBoneName, float Damage)
 {
 	int LimbIndex = GetLimbIndexFromBoneName(HitBoneName);
+	
 	if(LimbIndex == -1 || Limbs[LimbIndex].HasDetached)
 		return;
 	
@@ -55,28 +56,25 @@ void UDismembermentSKMComponent::Handle_LimbHit(FName HitBoneName, float Damage)
 	FMath::Clamp(Limbs[LimbIndex].LimbCurrentHealth -= Damage,0,1000);
 	if(!Limbs[LimbIndex].LimbCurrentHealth == 0)
 		return;
-	
-	//Detach Limb Forever OR Detach for Repair
-	if(Limbs[LimbIndex].CurrentRepairs >= Limbs[LimbIndex].MaxRepairs)
-	{
-		HideBoneByName(Limbs[LimbIndex].LimbRootName,PBO_Term);
-		Limbs[LimbIndex].HasDetached = true;
-		UE_LOG(LogTemp,Error,TEXT("LIMB IS SEVERED"));
-	}
-	else
-	{
-		HideBoneByName(Limbs[LimbIndex].LimbRootName,PBO_None);
-		FBoneTransform NewTransform;
-		NewTransform.Transform.SetLocation(FVector{0,0,0});
-	}
 
-	//Mesh
-		
-	//PhysConstraints
+
+	HideBoneByName(Limbs[LimbIndex].LimbRootName,PBO_Term);
+	
+	//Detach Limb Forever if MAX repairs Reached
+	if(Limbs[LimbIndex].CurrentRepairs >= Limbs[LimbIndex].MaxRepairs)
+		Limbs[LimbIndex].HasDetached = true;
+
+	
+	//Todo Spawn Mesh
+	/*
+	 LimbMesh = SpawnActorFromClass()
+	 CreateTimer->
+	 OnTimerComplete-> DeleteLimbMesh
+	 */
 	
 	//Todo Spawn Particles
-	//FTransform BoneTrans = GetBoneTransform(GetBoneIndex(GetParentBone(Limbs[LimbIndex].LimbRootName)));
-	//SpawnParticles(BoneTrans);
+	FTransform BoneTrans = GetBoneTransform(GetBoneIndex(Limbs[LimbIndex].LimbRootName));
+	SpawnParticles(BoneTrans);
 
 }
 
@@ -84,18 +82,40 @@ void UDismembermentSKMComponent::Handle_LimbRepair(int LimbIndex)
 {
 	if(!Limbs.IsValidIndex(LimbIndex) || Limbs[LimbIndex].HasDetached)
 		return;
-	
+
+	RecreateSkeletalPhysics();
 	Limbs[LimbIndex].LimbCurrentHealth += 10;
 	Limbs[LimbIndex].CurrentRepairs += 1;
-	Limbs[LimbIndex].HasDetached = false;
-	
 	UnHideBoneByName(Limbs[LimbIndex].LimbRootName);
-		
+	for (FLimbGroupData Limb : Limbs)
+	{
+		if(IsBoneHidden(GetBoneIndex(Limb.LimbRootName)))
+			TermBodiesBelow(Limb.LimbRootName);
+	}
+}
+
+void UDismembermentSKMComponent::RepairAllLimbs()
+{
+	for (int i = 0; i < Limbs.Num();i++)
+	{
+		Limbs[i].CurrentRepairs = 0;
+		Limbs[i].HasDetached = false;
+		Limbs[i].LimbCurrentHealth = Limbs[i].LimbMaxHealth;
+		UnHideBoneByName(Limbs[i].LimbRootName);
+	}
+	RecreateSkeletalPhysics();
+}
+
+void UDismembermentSKMComponent::RecreateSkeletalPhysics()
+{
+	TermArticulated();
+	InitArticulated(GetWorld()->GetPhysicsScene());
+	UE_LOG(LogTemp,Warning,TEXT("Rebuilt Skeletal Physics for %s"),*GetOwner()->GetName());
 }
 
 void UDismembermentSKMComponent::SpawnParticles(FTransform EmitterTransform)
 {
 	OnSpawnParticles.Broadcast(EmitterTransform);
-	UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, EmitterTransform.GetLocation(), GetComponentRotation(), EAttachLocation::Type::KeepRelativeOffset, true);
+	UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, EmitterTransform.GetLocation(), FRotator::ZeroRotator, EAttachLocation::Type::KeepRelativeOffset, true);
 	UE_LOG(LogTemp,Warning,TEXT("%s"), *EmitterTransform.ToString());
 }

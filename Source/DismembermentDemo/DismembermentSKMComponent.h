@@ -31,7 +31,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Dismemberment")
 	TArray<FLimbGroupData> Limbs;
 	
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	void InitialiseBones();
 
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
@@ -44,9 +44,14 @@ protected:
 	void Handle_LimbRepair(int LimbIndex);
 
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
+	void RepairAllLimbs();
+
+	void RecreateSkeletalPhysics();
+	
+	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	void SpawnParticles(FTransform EmitterTransform);
 
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY(BlueprintAssignable,Category = "Dismemberment")
 	FOnSpawnParticles OnSpawnParticles;
 	
 };
