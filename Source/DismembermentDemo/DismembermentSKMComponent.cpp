@@ -70,17 +70,13 @@ void UDismembermentSKMComponent::Handle_LimbHit(FName HitBoneName, float Damage)
 		NewTransform.Transform.SetLocation(FVector{0,0,0});
 	}
 
-	
-	//TODO Spawn Mesh, Particles, & Limb Phys Constraints
-
 	//Mesh
-	
+		
 	//PhysConstraints
 	
-	//Particles
-	FVector BoneLoc = GetBoneLocation(Limbs[LimbIndex].LimbRootName);
-	FRotator BoneRot = GetBoneTransform(GetBoneIndex(GetParentBone(Limbs[LimbIndex].LimbRootName))).Rotator();
-	SpawnParticlesAtLocation(BoneLoc,BoneRot);
+	//Todo Spawn Particles
+	//FTransform BoneTrans = GetBoneTransform(GetBoneIndex(GetParentBone(Limbs[LimbIndex].LimbRootName)));
+	//SpawnParticles(BoneTrans);
 
 }
 
@@ -97,10 +93,9 @@ void UDismembermentSKMComponent::Handle_LimbRepair(int LimbIndex)
 		
 }
 
-void UDismembermentSKMComponent::SpawnParticlesAtLocation(FVector RelativeToMesh, FRotator InRelativeRotation)
+void UDismembermentSKMComponent::SpawnParticles(FTransform EmitterTransform)
 {
-	UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, RelativeToMesh, FRotator::ZeroRotator, EAttachLocation::Type::KeepRelativeOffset, true);
-	UE_LOG(LogTemp,Warning,TEXT("%s"), *RelativeToMesh.ToString());
-
+	OnSpawnParticles.Broadcast(EmitterTransform);
+	UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, EmitterTransform.GetLocation(), GetComponentRotation(), EAttachLocation::Type::KeepRelativeOffset, true);
+	UE_LOG(LogTemp,Warning,TEXT("%s"), *EmitterTransform.ToString());
 }
-

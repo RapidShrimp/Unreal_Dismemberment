@@ -6,6 +6,8 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "DismembermentSKMComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSpawnParticles,FTransform,Transform);
+
 class UNiagaraComponent;
 class USkeletonDataAsset;
 struct FLimbGroupData;
@@ -42,5 +44,9 @@ protected:
 	void Handle_LimbRepair(int LimbIndex);
 
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
-	void SpawnParticlesAtLocation(FVector RelativeToMesh, FRotator InRelativeRotation);
+	void SpawnParticles(FTransform EmitterTransform);
+
+	UPROPERTY(BlueprintAssignable)
+	FOnSpawnParticles OnSpawnParticles;
+	
 };
