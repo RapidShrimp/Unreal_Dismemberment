@@ -8,6 +8,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Engine/StaticMeshActor.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Structs/LimbGroupData.h"
 
 
@@ -126,6 +127,6 @@ void UDismembermentSKMComponent::RecreateSkeletalPhysics()
 void UDismembermentSKMComponent::SpawnParticles(FTransform EmitterTransform)
 {
 	OnSpawnParticles.Broadcast(EmitterTransform);
-	UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, EmitterTransform.GetLocation(), FRotator::ZeroRotator, EAttachLocation::Type::KeepRelativeOffset, true);
+	UNiagaraComponent* NiagaraComp = UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, EmitterTransform.GetLocation(), EmitterTransform.Rotator(), EAttachLocation::Type::KeepRelativeOffset, true);
 	UE_LOG(LogTemp,Warning,TEXT("%s"), *EmitterTransform.ToString());
 }
