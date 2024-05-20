@@ -80,12 +80,12 @@ void UDismembermentSKMComponent::Handle_LimbHit(FName HitBoneName, float Damage)
 		MeshComponent->SetSimulatePhysics(true);
 	}
 	
-	//Todo Spawn Particles
-	SpawnParticles(BoneTrans);
+	//Spawn Particles
+	FVector BoneDir = BoneTrans.GetLocation() - GetBoneTransform(GetBoneIndex(GetParentBone(Limbs[LimbIndex].LimbRootName))).GetLocation();
+	SpawnParticles(BoneTrans,FRotationMatrix::MakeFromX(BoneDir).Rotator());
 
 	//Todo Setup Tether Constraints
-
-	//Todo Rope Renderer
+	
 	
 }
 
@@ -124,9 +124,9 @@ void UDismembermentSKMComponent::RecreateSkeletalPhysics()
 	UE_LOG(LogTemp,Warning,TEXT("Rebuilt Skeletal Physics for %s"),*GetOwner()->GetName());
 }
 
-void UDismembermentSKMComponent::SpawnParticles(FTransform EmitterTransform)
+void UDismembermentSKMComponent::SpawnParticles(FTransform EmitterTransform, FRotator InRotation)
 {
 	OnSpawnParticles.Broadcast(EmitterTransform);
-	UNiagaraComponent* NiagaraComp = UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, EmitterTransform.GetLocation(), EmitterTransform.Rotator(), EAttachLocation::Type::KeepRelativeOffset, true);
+	UNiagaraComponent* NiagaraComp = UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, EmitterTransform.GetLocation(), InRotation, EAttachLocation::Type::KeepRelativeOffset, true);
 	UE_LOG(LogTemp,Warning,TEXT("%s"), *EmitterTransform.ToString());
 }

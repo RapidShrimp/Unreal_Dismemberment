@@ -49,7 +49,7 @@ protected:
 	void RecreateSkeletalPhysics();
 	
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
-	void SpawnParticles(FTransform EmitterTransform);
+	void SpawnParticles(FTransform EmitterTransform, FRotator Rotation);
 
 	UPROPERTY(BlueprintAssignable,Category = "Dismemberment")
 	FOnSpawnParticles OnSpawnParticles;
