@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/SkeletalMeshComponent.h"
+#include "Structs/LimbGroupData.h"
 #include "DismembermentSKMComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSpawnParticles,FTransform,Transform);
-
-class UNiagaraComponent;
 class USkeletonDataAsset;
-struct FLimbGroupData;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbRemoved,FLimbGroupData, Limb);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbSevered,FLimbGroupData, Limb);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbHealed,FLimbGroupData,Limb);
 /**
  * 
  */
@@ -19,21 +19,16 @@ class DISMEMBERMENTDEMO_API UDismembermentSKMComponent : public USkeletalMeshCom
 {
 	GENERATED_BODY()
 
-protected:
+public:
 	UDismembermentSKMComponent();
-	
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite, Category = "Dismemberment")
-	TObjectPtr<UNiagaraComponent> NiagaraComponent;
-	
-	UPROPERTY(EditAnywhere, Category = "Dismemberment")
-	TObjectPtr<USkeletonDataAsset> SkeletonData;
 
+	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
+	void InitialiseBones(USkeletonDataAsset* SkeletonData);
+	
+protected:
 	UPROPERTY(VisibleAnywhere, Category = "Dismemberment")
 	TArray<FLimbGroupData> Limbs;
 	
-	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
-	void InitialiseBones();
-
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	int GetLimbIndexFromBoneName(FName Bone);
 	
@@ -47,11 +42,19 @@ protected:
 	void RepairAllLimbs();
 
 	void RecreateSkeletalPhysics();
-	
-	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
-	void SpawnParticles(FTransform EmitterTransform, FRotator Rotation);
 
+public:
+	FTransform GetLimbTransform(FName BoneName) {return GetBoneTransform(GetBoneIndex(BoneName));}
+	FTransform GetBoneParentTransform(FName BoneName) {return GetLimbTransform(GetParentBone(BoneName));}
+	
 	UPROPERTY(BlueprintAssignable,Category = "Dismemberment")
-	FOnSpawnParticles OnSpawnParticles;
+	FOnLimbRemoved OnLimbRemoved;
+	
+	UPROPERTY(BlueprintAssignable,Category = "Dismemberment")
+	FOnLimbSevered OnLimbSevered;
+	
+	UPROPERTY(BlueprintAssignable,Category = "Dismemberment")
+	FOnLimbHealed OnLimbHealed;
+
 	
 };
