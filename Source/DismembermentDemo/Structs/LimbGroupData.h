@@ -17,7 +17,7 @@ struct FLimbGroupData
 
  //Asset Visual & Audio Data
  UPROPERTY(EditAnywhere)
- TObjectPtr<UStaticMesh> LimbMesh;
+ TObjectPtr<UStaticMesh> Mesh;
  UPROPERTY(EditAnywhere)
  E_LimbTypes LimbType = E_LimbTypes::None;
  
@@ -25,9 +25,9 @@ struct FLimbGroupData
  FName LimbRootName = "NULL";
  
  //Health
- float LimbCurrentHealth = 40.0f;
+ float CurrentHealth = 40.0f;
  UPROPERTY(EditAnywhere)
- float LimbMaxHealth = LimbCurrentHealth;
+ float MaxHealth = CurrentHealth;
  int CurrentRepairs = 0;
  UPROPERTY(EditAnywhere)
  int MaxRepairs = 1;
