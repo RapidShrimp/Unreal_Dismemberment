@@ -34,7 +34,7 @@ ADismbembermentCharacter::ADismbembermentCharacter()
 	
 	//Particle Systems
 	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>("Spawner",false);
-	NiagaraComponent->SetupAttachment(RootComponent);
+	NiagaraComponent->SetupAttachment(Mesh);
 }
 
 // Called when the game starts or when spawned
@@ -48,17 +48,17 @@ void ADismbembermentCharacter::BeginPlay()
 
 void ADismbembermentCharacter::Handle_OnLimbSevered(FLimbGroupData Limb)
 {
-	UE_LOG(LogTemp,Warning,TEXT("SEVERED CALLED"));
+	
 	FTransform BoneTrans = Mesh->GetLimbTransform(Limb.LimbRootName);
 	FVector BoneDir = BoneTrans.GetLocation() - Mesh->GetBoneParentTransform(Limb.LimbRootName).GetLocation();
 	FRotator BoneRot = FRotationMatrix::MakeFromX(BoneDir).Rotator();
 	
-	SpawnParticles(BoneDir,BoneRot);
+	SpawnParticles(BoneTrans.GetLocation(),BoneRot);
 }
 
-void ADismbembermentCharacter::SpawnParticles(FVector InLocation, FRotator InRotation)
+void ADismbembermentCharacter::SpawnParticles_Implementation(FVector InLocation, FRotator InRotation)
 {
-	UNiagaraComponent* NiagaraComp = UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, InLocation, InRotation, EAttachLocation::Type::KeepRelativeOffset, true);
+	UNiagaraComponent* NiagaraComp = UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, InLocation, InRotation, EAttachLocation::Type::KeepWorldPosition, true);
 }
 
 void ADismbembermentCharacter::SpawnMesh()

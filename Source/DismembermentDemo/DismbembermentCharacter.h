@@ -47,9 +47,10 @@ protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite, Category = "Dismemberment")
 	TObjectPtr<UNiagaraComponent> NiagaraComponent;
 
+	UFUNCTION()
 	void Handle_OnLimbSevered(FLimbGroupData Limb);
 	
-	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
+	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
 	void SpawnParticles(FVector InLocation, FRotator InRotation);
 
 	//LimbVisuals
