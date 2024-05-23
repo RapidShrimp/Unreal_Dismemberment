@@ -10,10 +10,9 @@
     <list default="true" id="8cd76d73-756f-42ab-a524-99e55638f1d0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/DismembermentTest/BP_TestDummy.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/DismembermentTest/BP_TestDummy.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/DismembermentTest/DataAssets/TestDummyData.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/DismembermentTest/DataAssets/TestDummyData.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/D/B1/8JQOW16DVBWVHVVT56GZ80.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/D/B1/8JQOW16DVBWVHVVT56GZ80.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/DismbembermentCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DismembermentDemo/DismbembermentCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/DismbembermentCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DismembermentDemo/DismbembermentCharacter.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,7 +135,7 @@
       <updated>1715964416376</updated>
       <workItem from="1715964418221" duration="248000" />
       <workItem from="1715964767604" duration="15257000" />
-      <workItem from="1716485791691" duration="11965000" />
+      <workItem from="1716485791691" duration="13626000" />
     </task>
     <servers />
   </component>

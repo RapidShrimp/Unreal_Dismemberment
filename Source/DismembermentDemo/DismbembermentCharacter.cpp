@@ -31,6 +31,7 @@ ADismbembermentCharacter::ADismbembermentCharacter()
 	Mesh->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
 	Mesh->SetNotifyRigidBodyCollision(true);
 	Mesh->SetRelativeLocation(FVector{0,0,-96});
+	Mesh->SetRelativeRotation(FRotator{0,-90,0});
 	
 	//Particle Systems
 	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>("Spawner",false);
