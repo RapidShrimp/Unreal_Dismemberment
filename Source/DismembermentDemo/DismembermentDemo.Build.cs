@@ -8,7 +8,7 @@ public class DismembermentDemo : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore","Niagara","CableComponent" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore","Niagara","CableComponent", "UMG","UMGEditor","Blutility","UnrealEd" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
