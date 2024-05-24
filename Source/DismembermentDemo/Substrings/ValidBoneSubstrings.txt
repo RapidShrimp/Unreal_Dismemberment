@@ -1,4 +1,0 @@
-﻿upperarm,
-thigh,
-neck,
-head,
