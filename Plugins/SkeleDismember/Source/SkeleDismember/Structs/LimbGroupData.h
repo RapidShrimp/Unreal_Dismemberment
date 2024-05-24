@@ -16,26 +16,28 @@ struct FLimbGroupData
  GENERATED_BODY()
 
  //Asset Visual & Audio Data
- UPROPERTY(EditAnywhere, Category = "Dismemberment")
+ UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Dismemberment")
  TObjectPtr<UStaticMesh> Mesh;
- UPROPERTY(EditAnywhere, Category = "Dismemberment")
+ UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Dismemberment")
  E_LimbTypes LimbType = E_LimbTypes::None;
  
- UPROPERTY(EditAnywhere, Category = "Dismemberment")
+ UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Dismemberment")
  FName LimbRootName = "NULL";
  
  //Health
+ UPROPERTY(VisibleAnywhere,BlueprintReadWrite, Category = "Dismemberment")
  float CurrentHealth = 40.0f;
- UPROPERTY(EditAnywhere, Category = "Dismemberment")
+ UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Dismemberment")
  float MaxHealth = CurrentHealth;
+ UPROPERTY(VisibleAnywhere,BlueprintReadWrite, Category = "Dismemberment")
  int CurrentRepairs = 0;
- UPROPERTY(EditAnywhere, Category = "Dismemberment")
+ UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Dismemberment")
  int MaxRepairs = 1;
 
  //Physics
- UPROPERTY(VisibleAnywhere, Category = "Dismemberment")
+ UPROPERTY(VisibleAnywhere,BlueprintReadWrite, Category = "Dismemberment")
  bool HasDetached = false;
- UPROPERTY(EditDefaultsOnly, Category = "Dismemberment")
+ UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Dismemberment")
  bool bUseTetherPhysics;
  
 };
