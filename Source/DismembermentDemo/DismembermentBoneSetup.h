@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EditorUtilityWidgetBlueprint.h"
+#include "EditorUtilityWidget.h"
 #include "DismembermentBoneSetup.generated.h"
 
 /**
