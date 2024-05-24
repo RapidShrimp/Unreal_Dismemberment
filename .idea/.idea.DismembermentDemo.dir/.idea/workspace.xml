@@ -7,11 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8cd76d73-756f-42ab-a524-99e55638f1d0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Content/Test/TestDummy.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/TestDummy.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Content/DismembermentTest/DataAssets/UE4_Mannequin.uasset" beforeDir="false" />
-    </list>
+    <list default="true" id="8cd76d73-756f-42ab-a524-99e55638f1d0" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -137,7 +133,7 @@
       <workItem from="1716553988625" duration="249000" />
       <workItem from="1716559986149" duration="324000" />
       <workItem from="1716563292704" duration="134000" />
-      <workItem from="1716563767060" duration="1378000" />
+      <workItem from="1716563767060" duration="1730000" />
     </task>
     <servers />
   </component>

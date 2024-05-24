@@ -25,9 +25,9 @@ protected:
 	
 	//Component Defaults
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Dismemberment")
 	TObjectPtr<UCapsuleComponent> CapsuleComponent;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Dismemberment")
 	TObjectPtr<UDismembermentSKMComponent> Mesh;
 
 	UPROPERTY(EditAnywhere, Category = "Dismemberment")
@@ -47,7 +47,7 @@ protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite, Category = "Dismemberment")
 	TObjectPtr<UNiagaraComponent> NiagaraComponent;
 
-	UFUNCTION()
+	UFUNCTION(Category = "Dismemberment")
 	void Handle_OnLimbSevered(FLimbGroupData Limb);
 	
 	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
