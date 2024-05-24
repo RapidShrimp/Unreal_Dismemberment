@@ -8,23 +8,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8cd76d73-756f-42ab-a524-99e55638f1d0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Test/TestDummy.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/TestDummy.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Content/DismembermentTest/BP_TestDummy.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Content/DismembermentTest/DataAssets/TestDummyData.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/SkeleDismember.Build.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/SkeleDismember.Build.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/DismbembermentCharacter.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/DismbembermentCharacter.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/DismembermentBoneSetup.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/DismembermentBoneSetup.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/DismembermentSKMComponent.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/DismembermentSKMComponent.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/Enums/LimbTypes.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/SkeletonDataAsset.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/SkeletonDataAsset.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/Structs/LimbGroupData.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/Substrings/InValidBoneSubstrings.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/Substrings/ValidBoneSubstrings.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Content/DismembermentTest/DataAssets/UE4_Mannequin.uasset" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,7 +137,7 @@
       <workItem from="1716553988625" duration="249000" />
       <workItem from="1716559986149" duration="324000" />
       <workItem from="1716563292704" duration="134000" />
-      <workItem from="1716563767060" duration="1055000" />
+      <workItem from="1716563767060" duration="1378000" />
     </task>
     <servers />
   </component>
