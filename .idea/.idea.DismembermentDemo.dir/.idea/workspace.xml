@@ -9,11 +9,8 @@
   <component name="ChangeListManager">
     <list default="true" id="8cd76d73-756f-42ab-a524-99e55638f1d0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DismembermentDemo.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/DismembermentDemo.uproject" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/SkeleDismember.uplugin" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismember/SkeleDismember.uplugin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/DismembermentBoneSetup.h" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/DismembermentBoneSetup.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/SkeleDismember.Build.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/SkeleDismember.Build.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DismembermentDemo/DismembermentDemo.Build.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DismembermentDemo/DismembermentDemo.Build.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Content/EUW_BoneSetup.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Content/EUW_BoneSetup.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/Source/DismembermentBoneSetup.h" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/Source/DismembermentBoneSetup.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,6 +139,8 @@
       <workItem from="1716563292704" duration="134000" />
       <workItem from="1716563767060" duration="2623000" />
       <workItem from="1716567434832" duration="1658000" />
+      <workItem from="1716634850055" duration="866000" />
+      <workItem from="1716657430942" duration="1907000" />
     </task>
     <servers />
   </component>

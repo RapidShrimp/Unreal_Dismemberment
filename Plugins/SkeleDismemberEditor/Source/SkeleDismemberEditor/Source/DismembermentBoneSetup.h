@@ -39,6 +39,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable,CallInEditor,Category = "Dismemberment")
 	bool DoesBoneExist(FName Bone);
+
     UFUNCTION(BlueprintCallable,CallInEditor, Category = "Dismemberment")
     TArray<FName> GetSuggestedBoneNames();
 
