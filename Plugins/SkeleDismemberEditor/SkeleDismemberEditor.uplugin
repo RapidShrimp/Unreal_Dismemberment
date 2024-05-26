@@ -5,13 +5,13 @@
 	"FriendlyName": "SkeletonDismembermentEditor",
 	"Description": "",
 	"Category": "Editor Tool",
-	"CreatedBy": "",
+	"CreatedBy": "Adam Shrimpton",
 	"CreatedByURL": "",
 	"DocsURL": "",
 	"MarketplaceURL": "",
 	"SupportURL": "",
 	"CanContainContent": true,
-	"IsBetaVersion": false,
+	"IsBetaVersion": true,
 	"IsExperimentalVersion": false,
 	"Installed": false,
 	"Modules": [
@@ -19,6 +19,12 @@
 			"Name": "SkeleDismemberEditor",
 			"Type": "Editor",
 			"LoadingPhase": "Default"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "SkeleDismember",
+			"Enabled": true
 		}
 	]
 }

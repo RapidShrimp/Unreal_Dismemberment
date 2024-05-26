@@ -25,7 +25,7 @@ public class SkeleDismemberEditor : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core","Blutility","UMG","UMGEditor"
+				"Core","Blutility","UMG","UMGEditor", "SkeleDismember"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
