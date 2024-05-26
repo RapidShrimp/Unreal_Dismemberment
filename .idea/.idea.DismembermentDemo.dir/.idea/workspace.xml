@@ -9,10 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8cd76d73-756f-42ab-a524-99e55638f1d0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/SkeletonDataAsset.h" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/SkeletonDataAsset.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Content/EUW_BoneSetup.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Content/EUW_BoneSetup.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Content/WBP_ConfirmAssetCreation.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/Source/DismembermentBoneSetup.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/Source/DismembermentBoneSetup.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,7 +156,7 @@
       <workItem from="1716567434832" duration="1658000" />
       <workItem from="1716634850055" duration="866000" />
       <workItem from="1716657430942" duration="1908000" />
-      <workItem from="1716736968455" duration="17213000" />
+      <workItem from="1716736968455" duration="18039000" />
     </task>
     <servers />
   </component>
