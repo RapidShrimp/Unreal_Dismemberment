@@ -3,8 +3,11 @@
 
 #include "DismembermentBoneSetup.h"
 
+#include "ObjectTools.h"
 #include "Components/DetailsView.h"
 #include "Components/VerticalBox.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Kismet2/KismetEditorUtilities.h"
 
 #define DEBUG(x, ...) if(GEngine){GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT(x), __VA_ARGS__));}
 
@@ -178,6 +181,8 @@ void UDismembermentBoneSetup::UpdateLimbPanel(FName SelectedBone)
 
 void UDismembermentBoneSetup::ChangeLimbData(int Index, FLimbGroupData NewData)
 {
+	if(Index == -1)
+		return;
 	if(GetLimbIndex(NewData.LimbRootName) == Index)
 	{
 		Limbs[Index] = NewData;
@@ -186,5 +191,6 @@ void UDismembermentBoneSetup::ChangeLimbData(int Index, FLimbGroupData NewData)
 
 void UDismembermentBoneSetup::CreateAsset()
 {
-	UE_LOG(LogTemp,Warning,TEXT("Create Asset Called"));
+	
+
 }

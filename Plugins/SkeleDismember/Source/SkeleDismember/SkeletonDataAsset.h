@@ -18,10 +18,10 @@ class SKELEDISMEMBER_API USkeletonDataAsset : public UPrimaryDataAsset
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditDefaultsOnly, Category = "Dismemberment")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Dismemberment")
 	TObjectPtr<USkeletalMesh> SkeletalMesh;
-	UPROPERTY(EditDefaultsOnly, Category = "Dismemberment")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Dismemberment")
 	TObjectPtr<UNiagaraSystem> ParticleSystem;
-	UPROPERTY(EditDefaultsOnly, Category = "Dismemberment")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Dismemberment")
 	TArray<FLimbGroupData> Limbs;
 };
