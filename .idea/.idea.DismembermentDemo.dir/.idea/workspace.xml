@@ -8,8 +8,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8cd76d73-756f-42ab-a524-99e55638f1d0" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/DataAssets/SkeletonData.uasset" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Content/EUW_BoneSetup.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Content/EUW_BoneSetup.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/Substrings/InValidBoneSubstrings.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/Substrings/InValidBoneSubstrings.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
