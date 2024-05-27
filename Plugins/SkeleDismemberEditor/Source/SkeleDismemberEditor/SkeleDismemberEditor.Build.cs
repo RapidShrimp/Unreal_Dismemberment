@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class SkeleDismember : ModuleRules
+public class SkeleDismemberEditor : ModuleRules
 {
-	public SkeleDismember(ReadOnlyTargetRules Target) : base(Target)
+	public SkeleDismemberEditor(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
@@ -25,7 +25,7 @@ public class SkeleDismember : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core", "CoreUObject", "Engine", "InputCore","Niagara","CableComponent", "UMG"
+				"Core","Blutility","UMG","UMGEditor", "SkeleDismember"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -37,7 +37,7 @@ public class SkeleDismember : ModuleRules
 				"CoreUObject",
 				"Engine",
 				"Slate",
-				"SlateCore", "Blutility",
+				"SlateCore",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
