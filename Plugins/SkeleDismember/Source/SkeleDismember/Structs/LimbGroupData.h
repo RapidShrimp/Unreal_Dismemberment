@@ -17,7 +17,7 @@ struct FLimbGroupData
 
  //Asset Visual & Audio Data
  UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Dismemberment")
- TObjectPtr<UStaticMesh> Mesh;
+ TObjectPtr<USkeletalMesh> Mesh;
  UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Dismemberment")
  E_LimbTypes LimbType = E_LimbTypes::None;
  

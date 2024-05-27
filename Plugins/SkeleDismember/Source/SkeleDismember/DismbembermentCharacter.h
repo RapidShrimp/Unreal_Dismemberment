@@ -54,5 +54,6 @@ protected:
 	void SpawnParticles(FVector InLocation, FRotator InRotation);
 
 	//LimbVisuals
-	void SpawnMesh();
+	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
+	void SpawnMesh(FVector Location, FRotator Rotation, FLimbGroupData Limb);
 };
