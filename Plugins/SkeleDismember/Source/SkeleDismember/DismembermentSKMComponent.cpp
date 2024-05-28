@@ -56,14 +56,17 @@ void UDismembermentSKMComponent::Handle_LimbHit(FName HitBoneName, float Damage)
 	{
 		OnLimbSevered.Broadcast(Limbs[LimbIndex]);
 	}
-
-	Limbs[LimbIndex].HasDetached = true;
-	OnLimbRemoved.Broadcast(Limbs[LimbIndex]);
+	else
+	{
+		Limbs[LimbIndex].HasDetached = true;
+		OnLimbRemoved.Broadcast(Limbs[LimbIndex])
+	}
 	
 }
 
-void UDismembermentSKMComponent::Handle_LimbRepair(int LimbIndex)
+void UDismembermentSKMComponent::RepairLimb(FLimbGroupData Limb)
 {
+	int LimbIndex = GetLimbIndexFromBoneName(Limb.LimbRootName);
 	if(!Limbs.IsValidIndex(LimbIndex) || Limbs[LimbIndex].HasDetached)
 		return;
 
@@ -71,10 +74,10 @@ void UDismembermentSKMComponent::Handle_LimbRepair(int LimbIndex)
 	Limbs[LimbIndex].CurrentHealth += 10;
 	Limbs[LimbIndex].CurrentRepairs += 1;
 	UnHideBoneByName(Limbs[LimbIndex].LimbRootName);
-	for (FLimbGroupData Limb : Limbs)
+	for (FLimbGroupData SearchLimb : Limbs)
 	{
-		if(IsBoneHidden(GetBoneIndex(Limb.LimbRootName)))
-			TermBodiesBelow(Limb.LimbRootName);
+		if(IsBoneHidden(GetBoneIndex(SearchLimb.LimbRootName)))
+			TermBodiesBelow(SearchLimb.LimbRootName);
 	}
 }
 

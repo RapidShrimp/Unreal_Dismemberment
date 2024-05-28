@@ -11,6 +11,7 @@
 #include "Animation/SkeletalMeshActor.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "Engine/StaticMeshActor.h"
 #include "PhysicsEngine/PhysicsAsset.h"
 
 
@@ -19,7 +20,7 @@ class AStaticMeshActor;
 ADismbembermentCharacter::ADismbembermentCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Component"),false);
 	CapsuleComponent-> SetCollisionProfileName(TEXT("Pawn"));
@@ -39,6 +40,7 @@ ADismbembermentCharacter::ADismbembermentCharacter()
 	//Particle Systems
 	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>("Spawner",false);
 	NiagaraComponent->SetupAttachment(Mesh);
+	
 }
 
 // Called when the game starts or when spawned
@@ -52,7 +54,6 @@ void ADismbembermentCharacter::BeginPlay()
 
 void ADismbembermentCharacter::Handle_OnLimbSevered(FLimbGroupData Limb)
 {
-	
 	FTransform BoneTrans = Mesh->GetLimbTransform(Limb.LimbRootName);
 	FVector BoneDir = BoneTrans.GetLocation() - Mesh->GetBoneParentTransform(Limb.LimbRootName).GetLocation();
 	FRotator BoneRot = FRotationMatrix::MakeFromX(BoneDir).Rotator();
@@ -61,42 +62,39 @@ void ADismbembermentCharacter::Handle_OnLimbSevered(FLimbGroupData Limb)
 	SpawnMesh(BoneTrans.GetLocation(),GetActorRotation(),Limb);
 }
 
+void ADismbembermentCharacter::Handle_OnLimbRemoved(FLimbGroupData Limb)
+{
+	FTransform BoneTrans = Mesh->GetLimbTransform(Limb.LimbRootName);
+	FVector BoneDir = BoneTrans.GetLocation() - Mesh->GetBoneParentTransform(Limb.LimbRootName).GetLocation();
+	FRotator BoneRot = FRotationMatrix::MakeFromX(BoneDir).Rotator();
+	SpawnParticles(BoneTrans.GetLocation(),BoneRot);
+	SpawnMesh(BoneTrans.GetLocation(),GetActorRotation(),Limb);
+}
+
+void ADismbembermentCharacter::Handle_OnLimbRepaired(FLimbGroupData Limb)
+{
+	Mesh->RepairLimb(Limb);
+}
+
 void ADismbembermentCharacter::SpawnParticles_Implementation(FVector InLocation, FRotator InRotation)
 {
-	UNiagaraComponent* NiagaraComp = UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, InLocation, InRotation, EAttachLocation::Type::KeepWorldPosition, true);
+	UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, InLocation, InRotation, EAttachLocation::Type::KeepWorldPosition, true);
 }
-
 void ADismbembermentCharacter::SpawnMesh_Implementation(FVector Location, FRotator Rotation,FLimbGroupData Limb)
 {
-	USkeletalMesh* SkeletonMesh = Limb.Mesh;
-	if(SkeletonMesh == nullptr)
+	if(Limb.Mesh == nullptr)
 		return;
-
-	FString Socketname = Limb.LimbRootName.ToString()+="Socket";
-	USkeletalMeshSocket* Socket = SkeletonMesh->FindSocket(*Socketname);
 	
-	if(Socket == nullptr)
-		return;
-	/*
-	ASkeletalMeshActor* LimbMesh = NewObject<ASkeletalMeshActor>(USkeletalMeshComponent::StaticClass());
-	LimbMesh->AttachToComponent(Mesh,FAttachmentTransformRules::SnapToTargetIncludingScale);
-	LimbMesh->SetActorLocation(FVector{0,0,0});
-	LimbMesh->GetSkeletalMeshComponent()->SetSkeletalMeshAsset(SkeletonMesh);
-	LimbMesh->GetSkeletalMeshComponent()->SetCollisionProfileName("Ragdoll");
-	LimbMesh->GetSkeletalMeshComponent()->SetSimulatePhysics(true);
-	*/
-
-	USkeletalMeshComponent* SkeletalMeshComponent = NewObject<USkeletalMeshComponent>(this,USkeletalMeshComponent::StaticClass());
-	SkeletalMeshComponent->SetSkeletalMesh(SkeletonMesh);
-	SkeletalMeshComponent->AttachToComponent(Mesh,FAttachmentTransformRules::SnapToTargetIncludingScale,Socket->SocketName);
-	this->AddInstanceComponent(SkeletalMeshComponent);
-	SkeletalMeshComponent->RegisterComponent();
+	AStaticMeshActor* LimbMesh = GetWorld()->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass());
+	LimbMesh->SetMobility(EComponentMobility::Movable);
+	LimbMesh->SetActorLocation(Location);
+	UStaticMeshComponent* MeshComponent = LimbMesh->GetStaticMeshComponent();
+	if(MeshComponent)
+	{
+		MeshComponent->SetStaticMesh(Limb.Mesh);
+		MeshComponent->SetSimulatePhysics(true);
+	}
 	
-}
-
-void ADismbembermentCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
 
 void ADismbembermentCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

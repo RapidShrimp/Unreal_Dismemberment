@@ -10,7 +10,6 @@ class USkeletonDataAsset;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbRemoved,FLimbGroupData, Limb);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbSevered,FLimbGroupData, Limb);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbHealed,FLimbGroupData,Limb);
 /**
  * 
  */
@@ -36,9 +35,6 @@ protected:
 	void Handle_LimbHit(FName HitBoneName, float Damage);
 
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
-	void Handle_LimbRepair(int LimbIndex);
-
-	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	void RepairAllLimbs();
 
 	void RecreateSkeletalPhysics();
@@ -46,15 +42,14 @@ protected:
 public:
 	FTransform GetLimbTransform(FName BoneName) {return GetBoneTransform(GetBoneIndex(BoneName));}
 	FTransform GetBoneParentTransform(FName BoneName) {return GetLimbTransform(GetParentBone(BoneName));}
+
+	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
+	void RepairLimb(FLimbGroupData Limb);
 	
 	UPROPERTY(BlueprintAssignable,Category = "Dismemberment")
 	FOnLimbRemoved OnLimbRemoved;
 	
 	UPROPERTY(BlueprintAssignable,Category = "Dismemberment")
 	FOnLimbSevered OnLimbSevered;
-	
-	UPROPERTY(BlueprintAssignable,Category = "Dismemberment")
-	FOnLimbHealed OnLimbHealed;
-
 	
 };

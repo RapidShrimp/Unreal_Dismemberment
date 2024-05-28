@@ -35,9 +35,6 @@ protected:
 
 
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -49,7 +46,10 @@ protected:
 
 	UFUNCTION(Category = "Dismemberment")
 	void Handle_OnLimbSevered(FLimbGroupData Limb);
-	
+	UFUNCTION(Category = "Dismemberment")
+	void Handle_OnLimbRemoved(FLimbGroupData Limb);
+	UFUNCTION(Category = "Dismemberment")
+	void Handle_OnLimbRepaired(FLimbGroupData Limb);
 	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
 	void SpawnParticles(FVector InLocation, FRotator InRotation);
 
