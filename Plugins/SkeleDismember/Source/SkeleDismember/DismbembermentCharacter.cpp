@@ -48,7 +48,7 @@ void ADismbembermentCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	Mesh->InitialiseBones(SkeletonData);
-	Mesh->OnLimbRemoved.AddUniqueDynamic(this, &ADismbembermentCharacter::Handle_OnLimbSevered);
+	Mesh->OnLimbRemoved.AddUniqueDynamic(this, &ADismbembermentCharacter::Handle_OnLimbRemoved);
 	Mesh->OnLimbSevered.AddUniqueDynamic(this, &ADismbembermentCharacter::Handle_OnLimbSevered);
 }
 
@@ -68,22 +68,32 @@ void ADismbembermentCharacter::Handle_OnLimbRemoved(FLimbGroupData Limb)
 	FVector BoneDir = BoneTrans.GetLocation() - Mesh->GetBoneParentTransform(Limb.LimbRootName).GetLocation();
 	FRotator BoneRot = FRotationMatrix::MakeFromX(BoneDir).Rotator();
 	SpawnParticles(BoneTrans.GetLocation(),BoneRot);
-	SpawnMesh(BoneTrans.GetLocation(),GetActorRotation(),Limb);
+	AStaticMeshActor* SpawnedMesh = SpawnMesh(BoneTrans.GetLocation(),GetActorRotation(),Limb);
+
+	UE_LOG(LogTemp,Warning,TEXT("LimbRemoved"));
+	SpawnPhysicsTether(SpawnedMesh,Limb);
 }
 
 void ADismbembermentCharacter::Handle_OnLimbRepaired(FLimbGroupData Limb)
 {
 	Mesh->RepairLimb(Limb);
+	//Todo Remove World Mesh
+}
+
+void ADismbembermentCharacter::SpawnPhysicsTether_Implementation(AStaticMeshActor* MeshToAttach, FLimbGroupData Limb)
+{
+	//Todo Setup Physics Constraint
+	//Todo Setup Cable Component Attachments
 }
 
 void ADismbembermentCharacter::SpawnParticles_Implementation(FVector InLocation, FRotator InRotation)
 {
 	UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, InLocation, InRotation, EAttachLocation::Type::KeepWorldPosition, true);
 }
-void ADismbembermentCharacter::SpawnMesh_Implementation(FVector Location, FRotator Rotation,FLimbGroupData Limb)
+AStaticMeshActor* ADismbembermentCharacter::SpawnMesh_Implementation(FVector Location, FRotator Rotation,FLimbGroupData Limb)
 {
 	if(Limb.Mesh == nullptr)
-		return;
+		return nullptr;
 	
 	AStaticMeshActor* LimbMesh = GetWorld()->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass());
 	LimbMesh->SetMobility(EComponentMobility::Movable);
@@ -93,8 +103,9 @@ void ADismbembermentCharacter::SpawnMesh_Implementation(FVector Location, FRotat
 	{
 		MeshComponent->SetStaticMesh(Limb.Mesh);
 		MeshComponent->SetSimulatePhysics(true);
+		
 	}
-	
+	return LimbMesh;
 }
 
 void ADismbembermentCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

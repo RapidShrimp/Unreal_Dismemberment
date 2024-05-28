@@ -58,9 +58,9 @@ void UDismembermentSKMComponent::Handle_LimbHit(FName HitBoneName, float Damage)
 	}
 	else
 	{
-		Limbs[LimbIndex].HasDetached = true;
-		OnLimbRemoved.Broadcast(Limbs[LimbIndex])
+		OnLimbRemoved.Broadcast(Limbs[LimbIndex]);
 	}
+	Limbs[LimbIndex].HasDetached = true;
 	
 }
 
