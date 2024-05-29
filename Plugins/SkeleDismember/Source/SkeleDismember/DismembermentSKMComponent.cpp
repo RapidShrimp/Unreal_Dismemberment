@@ -81,6 +81,10 @@ void UDismembermentSKMComponent::RepairLimb(FLimbGroupData Limb)
 	}
 }
 
+void UDismembermentSKMComponent::EvaluateLimbs()
+{
+}
+
 void UDismembermentSKMComponent::RepairAllLimbs()
 {
 	for (int i = 0; i < Limbs.Num();i++)

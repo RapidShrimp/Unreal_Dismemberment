@@ -70,8 +70,11 @@ void ADismbembermentCharacter::Handle_OnLimbRemoved(FLimbGroupData Limb)
 	SpawnParticles(BoneTrans.GetLocation(),BoneRot);
 	AStaticMeshActor* SpawnedMesh = SpawnMesh(BoneTrans.GetLocation(),GetActorRotation(),Limb);
 
+	if(Limb.bUseTetherPhysics == true)
+	{
 	UE_LOG(LogTemp,Warning,TEXT("LimbRemoved"));
 	SpawnPhysicsTether(SpawnedMesh,Limb);
+	}
 }
 
 void ADismbembermentCharacter::Handle_OnLimbRepaired(FLimbGroupData Limb)

@@ -45,7 +45,9 @@ public:
 
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	void RepairLimb(FLimbGroupData Limb);
-	
+
+	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
+	void EvaluateLimbs();
 	UPROPERTY(BlueprintAssignable,Category = "Dismemberment")
 	FOnLimbRemoved OnLimbRemoved;
 	
