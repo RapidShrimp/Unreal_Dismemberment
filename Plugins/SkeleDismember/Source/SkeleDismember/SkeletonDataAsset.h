@@ -22,6 +22,11 @@ public:
 	TObjectPtr<USkeletalMesh> SkeletalMesh;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Dismemberment")
 	TObjectPtr<UNiagaraSystem> ParticleSystem;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Dismemberment")
+	float TetherLength = 20.0f;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Dismemberment")
+	float TetherWidth = 4.5f;
+	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Dismemberment")
 	TArray<FLimbGroupData> Limbs;
 };

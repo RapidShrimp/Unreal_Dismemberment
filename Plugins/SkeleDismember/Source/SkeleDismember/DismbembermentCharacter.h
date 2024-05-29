@@ -31,7 +31,7 @@ protected:
 	TObjectPtr<UCapsuleComponent> CapsuleComponent;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Dismemberment")
 	TObjectPtr<UDismembermentSKMComponent> Mesh;
-
+	
 	UPROPERTY(EditAnywhere, Category = "Dismemberment")
 	TObjectPtr<USkeletonDataAsset> SkeletonData;
 

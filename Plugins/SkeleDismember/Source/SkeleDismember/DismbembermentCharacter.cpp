@@ -3,16 +3,16 @@
 
 #include "DismbembermentCharacter.h"
 
-#include "BlendSpaceAnalysis.h"
-#include "NiagaraFunctionLibrary.h"
-#include "DismembermentSKMComponent.h"
-#include "NiagaraComponent.h"
-#include "SkeletonDataAsset.h"
-#include "Animation/SkeletalMeshActor.h"
 #include "Components/CapsuleComponent.h"
-#include "Engine/SkeletalMeshSocket.h"
+#include "DismembermentSKMComponent.h"
 #include "Engine/StaticMeshActor.h"
-#include "PhysicsEngine/PhysicsAsset.h"
+
+#include "SkeletonDataAsset.h"
+
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
+#include "CableComponent/Classes/CableComponent.h"
+#include "PhysicsEngine/PhysicsConstraintComponent.h"
 
 
 class AStaticMeshActor;
@@ -40,7 +40,6 @@ ADismbembermentCharacter::ADismbembermentCharacter()
 	//Particle Systems
 	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>("Spawner",false);
 	NiagaraComponent->SetupAttachment(Mesh);
-	
 }
 
 // Called when the game starts or when spawned
@@ -85,8 +84,50 @@ void ADismbembermentCharacter::Handle_OnLimbRepaired(FLimbGroupData Limb)
 
 void ADismbembermentCharacter::SpawnPhysicsTether_Implementation(AStaticMeshActor* MeshToAttach, FLimbGroupData Limb)
 {
-	//Todo Setup Physics Constraint
-	//Todo Setup Cable Component Attachments
+	//Physics Collision Setup
+	UStaticMeshComponent* MeshComp = MeshToAttach->GetStaticMeshComponent();
+	MeshComp->SetSimulatePhysics(false);
+	MeshComp->SetCollisionProfileName("Spectator");
+	MeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	MeshComp->SetCollisionObjectType(ECC_WorldStatic);
+	MeshComp->SetSimulatePhysics(true);
+
+	//Setup Cable Component Attachments
+	FTransform SocketTransform = Mesh->GetSocketTransform(Limb.LimbRootName,RTS_World);
+	UCableComponent* CableTether = NewObject<UCableComponent>(this,UCableComponent::StaticClass(),TEXT("CableComp"));
+
+	FAttachmentTransformRules AttachmentRules = {EAttachmentRule::KeepRelative,true};
+	AttachmentRules.LocationRule = EAttachmentRule::SnapToTarget;
+	AttachmentRules.RotationRule = EAttachmentRule::KeepRelative;
+	AttachmentRules.ScaleRule = EAttachmentRule::KeepRelative;
+
+	if(CableTether)
+	{
+		CableTether->SetRelativeTransform(SocketTransform);
+		CableTether->AttachToComponent(Mesh,AttachmentRules,Limb.LimbRootName);
+		CableTether->EndLocation = {0,0,0};
+		CableTether->CableWidth = SkeletonData->TetherWidth;
+		CableTether->CableLength = SkeletonData->TetherLength;
+		CableTether->SetAttachEndToComponent(MeshComp,"None");
+		CableTether->RegisterComponent();
+	}
+	//Setup Physics Constraint
+	UPhysicsConstraintComponent* PhysicsComp = NewObject<UPhysicsConstraintComponent>(this,UPhysicsConstraintComponent::StaticClass(),TEXT("PhysicsComp"));
+	if(PhysicsComp)
+	{
+		SocketTransform.Rotator() = GetActorRotation();
+		PhysicsComp->SetRelativeTransform(SocketTransform);
+		PhysicsComp->AttachToComponent(Mesh,AttachmentRules,Limb.LimbRootName);
+		PhysicsComp->SetConstrainedComponents(CapsuleComponent,"",MeshComp,"None");
+		PhysicsComp->RegisterComponent();
+
+		PhysicsComp->SetAngularSwing1Limit(ACM_Limited,20);
+		PhysicsComp->SetAngularSwing2Limit(ACM_Limited,30);
+		PhysicsComp->SetAngularTwistLimit(ACM_Limited,50);
+
+		PhysicsComp->SetLinearXLimit(LCM_Limited,10);
+		PhysicsComp->SetLinearZLimit(LCM_Limited,SkeletonData->TetherLength-5.0f);
+	}
 }
 
 void ADismbembermentCharacter::SpawnParticles_Implementation(FVector InLocation, FRotator InRotation)
