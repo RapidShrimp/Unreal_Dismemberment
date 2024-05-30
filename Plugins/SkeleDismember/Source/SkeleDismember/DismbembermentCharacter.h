@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Structs/LimbGroupData.h"
 #include "DismbembermentCharacter.generated.h"
 
+class AStaticMeshActor;
 struct FLimbGroupData;
 class UNiagaraComponent;
 class USkeletonDataAsset;
@@ -29,7 +31,7 @@ protected:
 	TObjectPtr<UCapsuleComponent> CapsuleComponent;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Dismemberment")
 	TObjectPtr<UDismembermentSKMComponent> Mesh;
-
+	
 	UPROPERTY(EditAnywhere, Category = "Dismemberment")
 	TObjectPtr<USkeletonDataAsset> SkeletonData;
 
@@ -50,10 +52,14 @@ protected:
 	void Handle_OnLimbRemoved(FLimbGroupData Limb);
 	UFUNCTION(Category = "Dismemberment")
 	void Handle_OnLimbRepaired(FLimbGroupData Limb);
-	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
-	void SpawnParticles(FVector InLocation, FRotator InRotation);
 
+	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
+	void SpawnPhysicsTether(AStaticMeshActor* MeshToAttach,FLimbGroupData Limb);
+	
 	//LimbVisuals
 	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
-	void SpawnMesh(FVector Location, FRotator Rotation, FLimbGroupData Limb);
+	void SpawnParticles(FVector InLocation, FRotator InRotation);
+	
+	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
+	AStaticMeshActor* SpawnMesh(FVector Location, FRotator Rotation, FLimbGroupData Limb);
 };
