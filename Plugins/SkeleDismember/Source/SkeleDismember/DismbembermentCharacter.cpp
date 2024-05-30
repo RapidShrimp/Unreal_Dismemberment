@@ -123,7 +123,7 @@ void ADismbembermentCharacter::SpawnPhysicsTether_Implementation(AStaticMeshActo
 
 		PhysicsComp->SetAngularSwing1Limit(ACM_Limited,20);
 		PhysicsComp->SetAngularSwing2Limit(ACM_Limited,30);
-		PhysicsComp->SetAngularTwistLimit(ACM_Limited,50);
+		PhysicsComp->SetAngularTwistLimit(ACM_Free,50);
 
 		PhysicsComp->SetLinearXLimit(LCM_Limited,10);
 		PhysicsComp->SetLinearZLimit(LCM_Limited,SkeletonData->TetherLength-5.0f);
