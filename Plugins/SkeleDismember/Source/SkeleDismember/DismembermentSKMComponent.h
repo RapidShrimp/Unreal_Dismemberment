@@ -8,8 +8,8 @@
 
 class USkeletonDataAsset;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbRemoved,FLimbGroupData, Limb);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbSevered,FLimbGroupData, Limb);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FONLIMBREM,FLimbGroupData, Limb);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FONLIMBSEV,FLimbGroupData, Limb);
 /**
  * 
  */
@@ -50,9 +50,9 @@ public:
 	void EvaluateLimbs();
 	
 	UPROPERTY(BlueprintAssignable,Category = "Dismemberment")
-	FOnLimbRemoved OnLimbRemoved;
+	FONLIMBREM OnLimbRemoved;
 	
 	UPROPERTY(BlueprintAssignable,Category = "Dismemberment")
-	FOnLimbSevered OnLimbSevered;
+	FONLIMBSEV OnLimbSevered;
 	
 };

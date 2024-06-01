@@ -3,6 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CableComponent.h"
+#include "Engine/StaticMeshActor.h"
+#include "PhysicsEngine/PhysicsConstraintComponent.h"
 #include "SkeleDismember/Enums/LimbTypes.h"
 #include "UObject/Object.h"
 #include "LimbGroupData.generated.h"

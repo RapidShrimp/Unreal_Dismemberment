@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "UDismemberment.h"
+#include "Dismemberment.h"
 
 #include "CableComponent.h"
 #include "NiagaraFunctionLibrary.h"
@@ -11,24 +11,24 @@
 
 
 // Sets default values for this component's properties
-UUDismemberment::UUDismemberment()
+UDismemberment::UDismemberment()
 {
 
 }
 
 //Find Skeletal Mesh to Allow Dismemberment
-void UUDismemberment::BeginPlay()
+void UDismemberment::BeginPlay()
 {
 	SkeleMesh = GetOwner()->FindComponentByClass<USkeletalMeshComponent>();
-	if(!SkeleMesh)
-		return;
-	InitialiseBones();
-	
 	NiagaraComponent = NewObject<UNiagaraComponent>(this,UNiagaraComponent::StaticClass(),TEXT("Niagra Comp"));
+	if(!SkeleMesh || !NiagaraComponent)
+		return;
+	
+	InitialiseBones();
 }
 
 //Create Bone Structure & Set Collision Responses
-void UUDismemberment::InitialiseBones()
+void UDismemberment::InitialiseBones()
 {
 	if(!SkeletonData)
 		return;
@@ -38,7 +38,7 @@ void UUDismemberment::InitialiseBones()
 }
 
 //When the Limb has been severed and can no longer be repaired
-void UUDismemberment::Handle_OnLimbSevered(FLimbGroupData Limb)
+void UDismemberment::Handle_OnLimbSevered(FLimbGroupData Limb)
 {
 	FTransform BoneTrans = GetLimbTransform(Limb.LimbRootName);
 	FVector BoneDir = BoneTrans.GetLocation() - GetBoneParentTransform(Limb.LimbRootName).GetLocation();
@@ -49,28 +49,26 @@ void UUDismemberment::Handle_OnLimbSevered(FLimbGroupData Limb)
 }
 
 //When the limb has been removed and can be destroyed [Tether Bool :)]
-void UUDismemberment::Handle_OnLimbRemoved(FLimbGroupData Limb)
+void UDismemberment::Handle_OnLimbRemoved(FLimbGroupData Limb)
 {
 	FTransform BoneTrans = GetLimbTransform(Limb.LimbRootName);
 	FVector BoneDir = BoneTrans.GetLocation() - GetBoneParentTransform(Limb.LimbRootName).GetLocation();
 	FRotator BoneRot = FRotationMatrix::MakeFromX(BoneDir).Rotator();
+
 	SpawnParticles(BoneTrans.GetLocation(),BoneRot);
 	AStaticMeshActor* SpawnedMesh = SpawnMesh(BoneTrans.GetLocation(),SkeleMesh->GetRelativeRotation(),Limb);
-
 	if(Limb.bUseTetherPhysics == true)
-	{
-	UE_LOG(LogTemp,Warning,TEXT("LimbRemoved"));
-	SpawnPhysicsTether(SpawnedMesh,Limb);
-	}
+		SpawnPhysicsTether(SpawnedMesh,Limb);
 }
 
 //Get the limb to be repaired, Rebuilds the physics body (Bit expensive but it works well)
-void UUDismemberment::Handle_OnLimbRepaired(FLimbGroupData Limb)
+void UDismemberment::Handle_OnLimbRepaired(FLimbGroupData Limb)
 {
 	int LimbIndex = GetLimbIndexFromBoneName(Limb.LimbRootName);
 	if(!Limbs.IsValidIndex(LimbIndex) || Limbs[LimbIndex].HasDetached)
 		return;
 
+	OnLimbRepaired.Broadcast(Limb);
 	RecreateSkeletalPhysics();
 	Limbs[LimbIndex].CurrentHealth += 10;
 	Limbs[LimbIndex].CurrentRepairs += 1;
@@ -82,8 +80,37 @@ void UUDismemberment::Handle_OnLimbRepaired(FLimbGroupData Limb)
 	}
 }
 
-//Repair all limbs, this is cheaper than OnLimbRepairec
-void UUDismemberment::RepairAllLimbs()
+void UDismemberment::Handle_LimbHit(FName HitBoneName, float Damage)
+{
+	int LimbIndex = GetLimbIndexFromBoneName(HitBoneName);
+	
+	if(LimbIndex == -1 || Limbs[LimbIndex].HasDetached)
+		return;
+
+	//Take Damage to the Limb & Check if its hit 0
+	FMath::Clamp(Limbs[LimbIndex].CurrentHealth -= Damage,0,Limbs[LimbIndex].CurrentHealth);
+	if(!Limbs[LimbIndex].CurrentHealth == 0)
+		return;
+
+	SkeleMesh->HideBoneByName(Limbs[LimbIndex].LimbRootName,PBO_Term);
+	
+	//Detach Limb Forever if MAX repairs Reached
+	if(Limbs[LimbIndex].CurrentRepairs >= Limbs[LimbIndex].MaxRepairs)
+	{
+		Handle_OnLimbSevered(Limbs[LimbIndex]);
+		OnLimbSevered.Broadcast(Limbs[LimbIndex]);
+	}
+	else
+	{
+		Handle_OnLimbRemoved(Limbs[LimbIndex]);
+		OnLimbRemoved.Broadcast(Limbs[LimbIndex]);
+	}
+	Limbs[LimbIndex].HasDetached = true;
+	
+}
+
+//Repair all limbs, this is cheaper than OnLimbRepaired
+void UDismemberment::RepairAllLimbs()
 {
 	for (int i = 0; i < Limbs.Num();i++)
 	{
@@ -91,12 +118,13 @@ void UUDismemberment::RepairAllLimbs()
 		Limbs[i].HasDetached = false;
 		Limbs[i].CurrentHealth = Limbs[i].MaxHealth;
 		SkeleMesh->UnHideBoneByName(Limbs[i].LimbRootName);
+		WipeLimbComponents(Limbs[i]);
 	}
 	RecreateSkeletalPhysics();
 }
 
 //Spawning of tether physics if the bool is enabled (Not advised due to dodgy physiscs)
-void UUDismemberment::SpawnPhysicsTether_Implementation(AStaticMeshActor* MeshToAttach, FLimbGroupData Limb)
+void UDismemberment::SpawnPhysicsTether_Implementation(AStaticMeshActor* MeshToAttach, FLimbGroupData Limb)
 {
 	//Physics Collision Setup
 	UStaticMeshComponent* MeshComp = MeshToAttach->GetStaticMeshComponent();
@@ -119,7 +147,7 @@ void UUDismemberment::SpawnPhysicsTether_Implementation(AStaticMeshActor* MeshTo
 		CableTether->SetAttachEndToComponent(MeshComp,"None");
 		CableTether->RegisterComponent();
 	}
-	
+
 	//Setup Physics Constraint
 	UPhysicsConstraintComponent* PhysicsComp = NewObject<UPhysicsConstraintComponent>(this,UPhysicsConstraintComponent::StaticClass(),TEXT("PhysicsComp"));
 	if(PhysicsComp)
@@ -129,23 +157,24 @@ void UUDismemberment::SpawnPhysicsTether_Implementation(AStaticMeshActor* MeshTo
 		PhysicsComp->ConstraintActor1 = GetOwner();
 		PhysicsComp->ConstraintActor2 = MeshToAttach;
 		//Physics Setup- Convert Data to editable Struct??
-		PhysicsComp->SetAngularSwing1Limit(ACM_Limited,20);
-		PhysicsComp->SetAngularSwing2Limit(ACM_Limited,30);
+		PhysicsComp->SetAngularSwing1Limit(ACM_Limited,15);
+		PhysicsComp->SetAngularSwing2Limit(ACM_Limited,25);
 		PhysicsComp->SetAngularTwistLimit(ACM_Limited,50);
 
-		PhysicsComp->SetLinearXLimit(LCM_Limited,10);
-		PhysicsComp->SetLinearZLimit(LCM_Limited,SkeletonData->TetherLength-5.0f);
+		PhysicsComp->SetLinearXLimit(LCM_Limited,5);
+		PhysicsComp->SetLinearZLimit(LCM_Limited,SkeletonData->TetherLength-10.0f);
 		PhysicsComp->RegisterComponent();
 	}
 }
 
 //Spawn a Particle System
-void UUDismemberment::SpawnParticles_Implementation(FVector InLocation, FRotator InRotation)
+void UDismemberment::SpawnParticles_Implementation(FVector InLocation, FRotator InRotation)
 {
 	UNiagaraComponent* Particles=UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, NiagaraComponent, NAME_None, InLocation, InRotation, EAttachLocation::Type::KeepWorldPosition, true);
 	Particles->AttachToComponent(GetOwner()->GetRootComponent(),FAttachmentTransformRules::KeepWorldTransform);
+	OnSpawnParticles.Broadcast(InLocation,InRotation);
 }
-AStaticMeshActor* UUDismemberment::SpawnMesh_Implementation(FVector Location, FRotator Rotation,FLimbGroupData Limb)
+AStaticMeshActor* UDismemberment::SpawnMesh_Implementation(FVector Location, FRotator Rotation,FLimbGroupData Limb)
 {
 	if(Limb.Mesh == nullptr)
 		return nullptr;
@@ -161,12 +190,14 @@ AStaticMeshActor* UUDismemberment::SpawnMesh_Implementation(FVector Location, FR
 		MeshComponent->SetStaticMesh(Limb.Mesh);
 		MeshComponent->SetSimulatePhysics(true);
 		MeshComponent->RegisterComponent();
+		MeshComponent->SetLinearDamping(4);
+		MeshComponent->SetAngularDamping(2);
 	}
+	OnLimbSpawned.Broadcast(Location,Rotation,Limb);
 	return LimbMesh;
 }
 
-
-int UUDismemberment::GetLimbIndexFromBoneName(FName Bone)
+int UDismemberment::GetLimbIndexFromBoneName(FName Bone)
 {
 	//Get All Root Bones
 	FName CurrentBone = Bone;
@@ -184,41 +215,46 @@ int UUDismemberment::GetLimbIndexFromBoneName(FName Bone)
 	return -1;
 }
 
-void UUDismemberment::Handle_LimbHit(FName HitBoneName, float Damage)
-{
-	int LimbIndex = GetLimbIndexFromBoneName(HitBoneName);
-	
-	if(LimbIndex == -1 || Limbs[LimbIndex].HasDetached)
-		return;
-
-	//Take Damage to the Limb & Check if its hit 0
-	FMath::Clamp(Limbs[LimbIndex].CurrentHealth -= Damage,0,Limbs[LimbIndex].CurrentHealth);
-	if(!Limbs[LimbIndex].CurrentHealth == 0)
-		return;
-
-	SkeleMesh->HideBoneByName(Limbs[LimbIndex].LimbRootName,PBO_Term);
-	
-	//Detach Limb Forever if MAX repairs Reached
-	if(Limbs[LimbIndex].CurrentRepairs >= Limbs[LimbIndex].MaxRepairs)
-	{
-		Handle_OnLimbSevered(Limbs[LimbIndex]);
-	}
-	else
-	{
-		Handle_OnLimbRemoved(Limbs[LimbIndex]);
-	}
-	Limbs[LimbIndex].HasDetached = true;
-	
-}
-
-void UUDismemberment::EvaluateLimbs()
-{
-}
-
-void UUDismemberment::RecreateSkeletalPhysics()
+void UDismemberment::RecreateSkeletalPhysics()
 {
 	//Remove ALL skeletal bones and recreate them - EXPENSIVE, use at own performance risk.
 	SkeleMesh->TermArticulated();
 	SkeleMesh->InitArticulated(GetWorld()->GetPhysicsScene());
 	UE_LOG(LogTemp,Warning,TEXT("Rebuilt Skeletal Physics for %s"),*GetOwner()->GetName());
 }
+
+void UDismemberment::EvaluateLimbs(int& Arms, int& Legs, int& Heads, int& Other)
+{
+	for (FLimbGroupData Limb : Limbs)
+	{
+		switch (Limb.LimbType)
+		{
+		case E_LimbTypes::Arms:
+			Arms++;
+			break;
+		case E_LimbTypes::Legs:
+			Legs++;
+			break;
+		case E_LimbTypes::Head:
+			Heads++;
+			break;
+		case E_LimbTypes::Other:
+			Other++;
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void UDismemberment::WipeLimbComponents(FLimbGroupData Limb)
+{
+
+}
+
+void UDismemberment::ReelLimbBack_Implementation()
+{
+}
+
+
+

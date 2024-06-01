@@ -60,4 +60,6 @@ protected:
 	
 	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
 	AStaticMeshActor* SpawnMesh(FVector Location, FRotator Rotation, FLimbGroupData Limb);
+
+	
 };
