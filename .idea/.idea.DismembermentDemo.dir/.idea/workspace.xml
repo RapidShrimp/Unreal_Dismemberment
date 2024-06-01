@@ -8,14 +8,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8cd76d73-756f-42ab-a524-99e55638f1d0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/UDismemberment.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/UDismemberment.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/DataAssets/UE4_Manny.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/DataAssets/UE4_Manny.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Test/BP_PhysicsActorTest.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Test/PhysActor.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Test/TestDummy.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/0/QP/CQTFQ7H6TBIO159SEEKSKQ.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/6/LJ/PMMO8J48D87DCB2XVQW358.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/6/LJ/PMMO8J48D87DCB2XVQW358.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Test/Example/BBT_MoveToLocation.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/Example/BBT_MoveToLocation.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Test/Example/DismemberAIController.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/Example/DismemberAIController.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Test/Example/TestDummy.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Maps/ThirdPersonMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ThirdPerson/Maps/ThirdPersonMap.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/8/3J/6B9RJI3FDPCETRKXUXCQ4C.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/8/3J/6B9RJI3FDPCETRKXUXCQ4C.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/9/DL/6Y6HLPX2MWGO9YYU7K15HP.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/E/8O/GK06JAEJ82TQ0GA2QB0DJG.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/E/8O/GK06JAEJ82TQ0GA2QB0DJG.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/DismbembermentCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/DismbembermentCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/DismbembermentCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/DismbembermentCharacter.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +31,26 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />

@@ -21,7 +21,6 @@ ADismbembermentCharacter::ADismbembermentCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Component"),false);
 	CapsuleComponent-> SetCollisionProfileName(TEXT("Pawn"));
 	CapsuleComponent->SetCapsuleHalfHeight(96);
@@ -29,32 +28,32 @@ ADismbembermentCharacter::ADismbembermentCharacter()
 	SetRootComponent(CapsuleComponent);
 
 	//Mesh Component
-	Mesh = CreateDefaultSubobject<UDismembermentSKMComponent>(TEXT("Dismemberment SKM Comp"),false);
-	Mesh->SetupAttachment(RootComponent);
-	Mesh->SetCollisionProfileName(TEXT("CharacterMesh"));
-	Mesh->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
-	Mesh->SetNotifyRigidBodyCollision(true);
-	Mesh->SetRelativeLocation(FVector{0,0,-96});
-	Mesh->SetRelativeRotation(FRotator{0,-90,0});
+	SkeleMesh = CreateDefaultSubobject<UDismembermentSKMComponent>(TEXT("Dismemberment SKM Comp"),false);
+	SkeleMesh->SetupAttachment(RootComponent);
+	SkeleMesh->SetCollisionProfileName(TEXT("CharacterMesh"));
+	SkeleMesh->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
+	SkeleMesh->SetNotifyRigidBodyCollision(true);
+	SkeleMesh->SetRelativeLocation(FVector{0,0,-96});
+	SkeleMesh->SetRelativeRotation(FRotator{0,-90,0});
 	
 	//Particle Systems
 	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>("Spawner",false);
-	NiagaraComponent->SetupAttachment(Mesh);
+	NiagaraComponent->SetupAttachment(SkeleMesh);
 }
 
 // Called when the game starts or when spawned
 void ADismbembermentCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	Mesh->InitialiseBones(SkeletonData);
-	Mesh->OnLimbRemoved.AddUniqueDynamic(this, &ADismbembermentCharacter::Handle_OnLimbRemoved);
-	Mesh->OnLimbSevered.AddUniqueDynamic(this, &ADismbembermentCharacter::Handle_OnLimbSevered);
+	SkeleMesh->InitialiseBones(SkeletonData);
+	SkeleMesh->OnLimbRemoved.AddUniqueDynamic(this, &ADismbembermentCharacter::Handle_OnLimbRemoved);
+	SkeleMesh->OnLimbSevered.AddUniqueDynamic(this, &ADismbembermentCharacter::Handle_OnLimbSevered);
 }
 
 void ADismbembermentCharacter::Handle_OnLimbSevered(FLimbGroupData Limb)
 {
-	FTransform BoneTrans = Mesh->GetLimbTransform(Limb.LimbRootName);
-	FVector BoneDir = BoneTrans.GetLocation() - Mesh->GetBoneParentTransform(Limb.LimbRootName).GetLocation();
+	FTransform BoneTrans = SkeleMesh->GetLimbTransform(Limb.LimbRootName);
+	FVector BoneDir = BoneTrans.GetLocation() - SkeleMesh->GetBoneParentTransform(Limb.LimbRootName).GetLocation();
 	FRotator BoneRot = FRotationMatrix::MakeFromX(BoneDir).Rotator();
 	
 	SpawnParticles(BoneTrans.GetLocation(),BoneRot);
@@ -63,8 +62,8 @@ void ADismbembermentCharacter::Handle_OnLimbSevered(FLimbGroupData Limb)
 
 void ADismbembermentCharacter::Handle_OnLimbRemoved(FLimbGroupData Limb)
 {
-	FTransform BoneTrans = Mesh->GetLimbTransform(Limb.LimbRootName);
-	FVector BoneDir = BoneTrans.GetLocation() - Mesh->GetBoneParentTransform(Limb.LimbRootName).GetLocation();
+	FTransform BoneTrans = SkeleMesh->GetLimbTransform(Limb.LimbRootName);
+	FVector BoneDir = BoneTrans.GetLocation() - SkeleMesh->GetBoneParentTransform(Limb.LimbRootName).GetLocation();
 	FRotator BoneRot = FRotationMatrix::MakeFromX(BoneDir).Rotator();
 	SpawnParticles(BoneTrans.GetLocation(),BoneRot);
 	AStaticMeshActor* SpawnedMesh = SpawnMesh(BoneTrans.GetLocation(),GetActorRotation(),Limb);
@@ -78,7 +77,7 @@ void ADismbembermentCharacter::Handle_OnLimbRemoved(FLimbGroupData Limb)
 
 void ADismbembermentCharacter::Handle_OnLimbRepaired(FLimbGroupData Limb)
 {
-	Mesh->RepairLimb(Limb);
+	SkeleMesh->RepairLimb(Limb);
 	//Todo Remove World Mesh
 }
 
@@ -93,7 +92,7 @@ void ADismbembermentCharacter::SpawnPhysicsTether_Implementation(AStaticMeshActo
 	MeshComp->SetSimulatePhysics(true);
 
 	//Setup Cable Component Attachments
-	FTransform SocketTransform = Mesh->GetSocketTransform(Limb.LimbRootName,RTS_World);
+	FTransform SocketTransform = SkeleMesh->GetSocketTransform(Limb.LimbRootName,RTS_World);
 	UCableComponent* CableTether = NewObject<UCableComponent>(this,UCableComponent::StaticClass(),TEXT("CableComp"));
 
 	FAttachmentTransformRules AttachmentRules = {EAttachmentRule::KeepRelative,true};
@@ -104,7 +103,7 @@ void ADismbembermentCharacter::SpawnPhysicsTether_Implementation(AStaticMeshActo
 	if(CableTether)
 	{
 		CableTether->SetRelativeTransform(SocketTransform);
-		CableTether->AttachToComponent(Mesh,AttachmentRules,Limb.LimbRootName);
+		CableTether->AttachToComponent(SkeleMesh,AttachmentRules,Limb.LimbRootName);
 		CableTether->EndLocation = {0,0,0};
 		CableTether->CableWidth = SkeletonData->TetherWidth;
 		CableTether->CableLength = SkeletonData->TetherLength;
@@ -117,7 +116,7 @@ void ADismbembermentCharacter::SpawnPhysicsTether_Implementation(AStaticMeshActo
 	{
 		SocketTransform.Rotator() = GetActorRotation();
 		PhysicsComp->SetRelativeTransform(SocketTransform);
-		PhysicsComp->AttachToComponent(Mesh,AttachmentRules,Limb.LimbRootName);
+		PhysicsComp->AttachToComponent(SkeleMesh,AttachmentRules,Limb.LimbRootName);
 		PhysicsComp->SetConstrainedComponents(CapsuleComponent,"",MeshComp,"None");
 
 		PhysicsComp->SetAngularSwing1Limit(ACM_Limited,20);
