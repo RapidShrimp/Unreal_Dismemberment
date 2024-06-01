@@ -35,7 +35,7 @@ ADismbembermentCharacter::ADismbembermentCharacter()
 	Mesh->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
 	Mesh->SetNotifyRigidBodyCollision(true);
 	Mesh->SetRelativeLocation(FVector{0,0,-96});
-	Mesh->SetRelativeRotation(FRotator{0,0,0});
+	Mesh->SetRelativeRotation(FRotator{0,-90,0});
 	
 	//Particle Systems
 	NiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>("Spawner",false);
@@ -119,7 +119,6 @@ void ADismbembermentCharacter::SpawnPhysicsTether_Implementation(AStaticMeshActo
 		PhysicsComp->SetRelativeTransform(SocketTransform);
 		PhysicsComp->AttachToComponent(Mesh,AttachmentRules,Limb.LimbRootName);
 		PhysicsComp->SetConstrainedComponents(CapsuleComponent,"",MeshComp,"None");
-		PhysicsComp->RegisterComponent();
 
 		PhysicsComp->SetAngularSwing1Limit(ACM_Limited,20);
 		PhysicsComp->SetAngularSwing2Limit(ACM_Limited,30);
@@ -127,6 +126,7 @@ void ADismbembermentCharacter::SpawnPhysicsTether_Implementation(AStaticMeshActo
 
 		PhysicsComp->SetLinearXLimit(LCM_Limited,10);
 		PhysicsComp->SetLinearZLimit(LCM_Limited,SkeletonData->TetherLength-5.0f);
+		PhysicsComp->RegisterComponent();
 	}
 }
 
