@@ -57,12 +57,13 @@ protected:
 	TObjectPtr<USkeletalMeshComponent> SkeleMesh;
 	UPROPERTY(EditAnywhere, Category = "Dismemberment")
 	TObjectPtr<USkeletonDataAsset> SkeletonData;
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite, Category = "Dismemberment")
-	TObjectPtr<UNiagaraComponent> NiagaraComponent;
 	UPROPERTY(VisibleAnywhere, Category = "Dismemberment")
 	TArray<FLimbGroupData> Limbs;
 
-	//Limb Handles
+	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
+	void InitialiseBones();
+	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
+	void Handle_LimbHit(FName HitBoneName, float Damage);
 	UFUNCTION(Category = "Dismemberment")
 	void Handle_OnLimbSevered(FLimbGroupData Limb);
 	UFUNCTION(Category = "Dismemberment")
@@ -70,36 +71,29 @@ protected:
 	UFUNCTION(Category = "Dismemberment")
 	void Handle_OnLimbRepaired(FLimbGroupData Limb);
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
-	void Handle_LimbHit(FName HitBoneName, float Damage);
-	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	void RepairAllLimbs();
+	void RecreateSkeletalPhysics();
 
+	
 	//Limb Visuals
 	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
-	void SpawnPhysicsTether(AStaticMeshActor* MeshToAttach,FLimbGroupData Limb);
-	
-	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
-	void SpawnParticles(FVector InLocation, FRotator InRotation);
-	
-	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
 	AStaticMeshActor* SpawnMesh(FVector Location, FRotator Rotation, FLimbGroupData Limb);
+	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
+	UNiagaraComponent* SpawnParticles(FVector InLocation, FRotator InRotation);
+
+	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
+	UPhysicsConstraintComponent* SpawnPhysicsTether(AStaticMeshActor* MeshToAttach,FLimbGroupData Limb);
+	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
+	UCableComponent* SpawnCableTether(AStaticMeshActor* MeshToAttach, FTransform SocketTransform, FName SocketName);
 	
-	//Bone Functions
-	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
-	void InitialiseBones();
+	
+
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	int GetLimbIndexFromBoneName(FName Bone);
-	
-	void RecreateSkeletalPhysics();
 	FTransform GetLimbTransform(FName BoneName) {return SkeleMesh->GetBoneTransform(SkeleMesh->GetBoneIndex(BoneName));}
 	FTransform GetBoneParentTransform(FName BoneName) {return GetLimbTransform(SkeleMesh->GetParentBone(BoneName));}
 
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	void EvaluateLimbs(int& Arms, int& Legs, int& Heads, int& Other);
 
-	//Limb Handles
-	UFUNCTION(BlueprintCallable, Category = "Dismemberment")
-	void WipeLimbComponents(FLimbGroupData Limb);
-	UFUNCTION(BlueprintNativeEvent, Category = "Dismemberment")
-	void ReelLimbBack();
 };
