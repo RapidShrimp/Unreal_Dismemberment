@@ -7,6 +7,8 @@
 #include "Structs/LimbGroupData.h"
 #include "Dismemberment.generated.h"
 
+class UCableComponent;
+class UPhysicsConstraintComponent;
 class USphereComponent;
 class AStaticMeshActor;
 struct FLimbGroupData;
@@ -32,10 +34,7 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
-	//TODO- Store Limbs Detached Components
-	//TODO- Setup Expired Limb Removal
-		
+	
 	//Delegates
 	UPROPERTY(BlueprintAssignable,Category = "Dismemberment")
 	FOnLimbRemoved OnLimbRemoved;
@@ -53,12 +52,16 @@ protected:
 	FOnLimbSpawned OnLimbSpawned;
 	
 	//Data
+	TArray<TObjectPtr<UPhysicsConstraintComponent>> PhysComponents;
+	TArray<TObjectPtr<UCableComponent>> CableComponents;
+	TArray<TObjectPtr<AStaticMeshActor>> Meshes;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Dismemberment")
+	TArray<FLimbGroupData> Limbs;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Dismemberment")
 	TObjectPtr<USkeletalMeshComponent> SkeleMesh;
 	UPROPERTY(EditAnywhere, Category = "Dismemberment")
 	TObjectPtr<USkeletonDataAsset> SkeletonData;
-	UPROPERTY(VisibleAnywhere, Category = "Dismemberment")
-	TArray<FLimbGroupData> Limbs;
 
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	void InitialiseBones();
@@ -84,12 +87,13 @@ protected:
 	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
 	UPhysicsConstraintComponent* SpawnPhysicsTether(AStaticMeshActor* MeshToAttach,FLimbGroupData Limb);
 	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
-	UCableComponent* SpawnCableTether(AStaticMeshActor* MeshToAttach, FTransform SocketTransform, FName SocketName);
-	
-	
+	UCableComponent* SpawnCableTether(AStaticMeshActor* MeshToAttach, FName SocketName);
 
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	int GetLimbIndexFromBoneName(FName Bone);
+	void UpdateLimbRefs(int LimbIndex, AStaticMeshActor* Mesh, UPhysicsConstraintComponent* Phys, UCableComponent* Cable);
+	void DeleteLimbRefs(int LimbIndex);
+	
 	FTransform GetLimbTransform(FName BoneName) {return SkeleMesh->GetBoneTransform(SkeleMesh->GetBoneIndex(BoneName));}
 	FTransform GetBoneParentTransform(FName BoneName) {return GetLimbTransform(SkeleMesh->GetParentBone(BoneName));}
 

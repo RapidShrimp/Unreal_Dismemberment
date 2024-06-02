@@ -34,6 +34,11 @@ void UDismemberment::InitialiseBones()
 	SkeleMesh->SetSkeletalMeshAsset(SkeletonData->SkeletalMesh);
 	SkeleMesh->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
 	Limbs = SkeletonData->Limbs;
+
+	int Size = Limbs.Num();
+	PhysComponents.SetNum(Size);
+	CableComponents.SetNum(Size);
+	Meshes.SetNum(Size);
 }
 
 void UDismemberment::Handle_LimbHit(FName HitBoneName, float Damage)
@@ -72,8 +77,14 @@ void UDismemberment::Handle_OnLimbSevered(FLimbGroupData Limb)
 	FVector BoneDir = BoneTrans.GetLocation() - GetBoneParentTransform(Limb.LimbRootName).GetLocation();
 	FRotator BoneRot = FRotationMatrix::MakeFromX(BoneDir).Rotator();
 	
-	SpawnParticles(BoneTrans.GetLocation(),BoneRot);
-	SpawnMesh(BoneTrans.GetLocation(),SkeleMesh->GetRelativeRotation(),Limb);
+	UNiagaraComponent* Particles = SpawnParticles(BoneTrans.GetLocation(),BoneRot);
+	AStaticMeshActor* Mesh = SpawnMesh(BoneTrans.GetLocation(),SkeleMesh->GetRelativeRotation(),Limb);
+
+	int Index = GetLimbIndexFromBoneName(Limb.LimbRootName);
+	if(Index ==-1)
+		return;
+	UpdateLimbRefs(Index,Mesh,nullptr,nullptr);
+
 }
 
 //When the limb has been removed and can be destroyed [Tether Bool :)]
@@ -83,10 +94,21 @@ void UDismemberment::Handle_OnLimbRemoved(FLimbGroupData Limb)
 	FVector BoneDir = BoneTrans.GetLocation() - GetBoneParentTransform(Limb.LimbRootName).GetLocation();
 	FRotator BoneRot = FRotationMatrix::MakeFromX(BoneDir).Rotator();
 
-	SpawnParticles(BoneTrans.GetLocation(),BoneRot);
 	AStaticMeshActor* SpawnedMesh = SpawnMesh(BoneTrans.GetLocation(),SkeleMesh->GetRelativeRotation(),Limb);
+	UNiagaraComponent* Particles = SpawnParticles(BoneTrans.GetLocation(),BoneRot);
+	UPhysicsConstraintComponent* PhysComp = nullptr;
+	UCableComponent* Cable = nullptr;
+	
 	if(Limb.bUseTetherPhysics == true)
-		SpawnPhysicsTether(SpawnedMesh,Limb);
+	{
+		PhysComp = SpawnPhysicsTether(SpawnedMesh,Limb);
+		Cable = SpawnCableTether(SpawnedMesh,Limb.LimbRootName);
+	}
+
+	int Index = GetLimbIndexFromBoneName(Limb.LimbRootName);
+	if(Index ==-1)
+		return;
+	UpdateLimbRefs(Index,SpawnedMesh,PhysComp,Cable);
 }
 
 //Get the limb to be repaired, Rebuilds the physics body (Bit expensive but it works well)
@@ -101,9 +123,10 @@ void UDismemberment::Handle_OnLimbRepaired(FLimbGroupData Limb)
 	Limbs[LimbIndex].CurrentHealth += 10;
 	Limbs[LimbIndex].CurrentRepairs += 1;
 	SkeleMesh->UnHideBoneByName(Limbs[LimbIndex].LimbRootName);
+	UpdateLimbRefs(LimbIndex,nullptr,nullptr,nullptr);
 	for (FLimbGroupData SearchLimb : Limbs)
 	{
-		if(SkeleMesh->IsBoneHidden(SkeleMesh->GetBoneIndex(SearchLimb.LimbRootName)))
+		if(SkeleMesh->IsBoneHidden(SkeleMesh->GetBoneIndex(SearchLimb.LimbRootName))){}
 			SkeleMesh->TermBodiesBelow(SearchLimb.LimbRootName);
 	}
 }
@@ -117,6 +140,7 @@ void UDismemberment::RepairAllLimbs()
 		Limbs[i].HasDetached = false;
 		Limbs[i].CurrentHealth = Limbs[i].MaxHealth;
 		SkeleMesh->UnHideBoneByName(Limbs[i].LimbRootName);
+		UpdateLimbRefs(i,nullptr,nullptr,nullptr);
 	}
 	RecreateSkeletalPhysics();
 }
@@ -151,6 +175,7 @@ UNiagaraComponent* UDismemberment::SpawnParticles_Implementation(FVector InLocat
 	UNiagaraComponent* Particles=UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, GetOwner()->GetRootComponent(), NAME_None, InLocation, InRotation, EAttachLocation::Type::KeepWorldPosition, true);
 	Particles->AttachToComponent(GetOwner()->GetRootComponent(),FAttachmentTransformRules::KeepWorldTransform);
 	OnSpawnParticles.Broadcast(InLocation,InRotation);
+	GetOwner()->AddInstanceComponent(Particles);
 	return Particles;
 }
 
@@ -170,7 +195,9 @@ UPhysicsConstraintComponent* UDismemberment::SpawnPhysicsTether_Implementation(A
 
 
 	//Setup Physics Constraint
-	UPhysicsConstraintComponent* PhysicsComp = NewObject<UPhysicsConstraintComponent>(this,UPhysicsConstraintComponent::StaticClass(),TEXT("PhysicsComp"));
+	FString CompName = "CableComp" + Limb.LimbRootName.ToString();
+
+	UPhysicsConstraintComponent* PhysicsComp = NewObject<UPhysicsConstraintComponent>(this,UPhysicsConstraintComponent::StaticClass());
 	if(PhysicsComp)
 	{
 		SocketTransform.Rotator() = SkeleMesh->GetRelativeRotation();
@@ -184,15 +211,19 @@ UPhysicsConstraintComponent* UDismemberment::SpawnPhysicsTether_Implementation(A
 
 		PhysicsComp->SetLinearXLimit(LCM_Limited,5);
 		PhysicsComp->SetLinearZLimit(LCM_Limited,SkeletonData->TetherLength-10.0f);
-		PhysicsComp->RegisterComponent();
+		GetOwner()->AddInstanceComponent(PhysicsComp);
+		GetOwner()->FinishAndRegisterComponent(PhysicsComp);
 	}
 	return PhysicsComp;
 }
 
 //Spawn Cable Tether
-UCableComponent* UDismemberment::SpawnCableTether_Implementation(AStaticMeshActor* MeshToAttach, FTransform SocketTransform, FName SocketName)
+UCableComponent* UDismemberment::SpawnCableTether_Implementation(AStaticMeshActor* MeshToAttach, FName SocketName)
 {
-	UCableComponent* CableTether = NewObject<UCableComponent>(this,UCableComponent::StaticClass(),TEXT("CableComp"));
+	FTransform SocketTransform = SkeleMesh->GetSocketTransform(SocketName,RTS_World);
+	FString CompName = "CableComp" + SocketName.ToString();
+	
+	UCableComponent* CableTether = NewObject<UCableComponent>(this,UCableComponent::StaticClass());
 	if(CableTether)
 	{
 		CableTether->SetRelativeTransform(SocketTransform);
@@ -201,7 +232,8 @@ UCableComponent* UDismemberment::SpawnCableTether_Implementation(AStaticMeshActo
 		CableTether->CableWidth = SkeletonData->TetherWidth;
 		CableTether->CableLength = SkeletonData->TetherLength;
 		CableTether->SetAttachEndToComponent(MeshToAttach->GetStaticMeshComponent(),"None");
-		CableTether->RegisterComponent();
+		GetOwner()->AddInstanceComponent(CableTether);
+		GetOwner()->FinishAndRegisterComponent(CableTether);
 	}
 	return CableTether;
 }
@@ -222,6 +254,31 @@ int UDismemberment::GetLimbIndexFromBoneName(FName Bone)
 	} while(CurrentBone != "none");
 
 	return -1;
+}
+
+void UDismemberment::UpdateLimbRefs(int LimbIndex, AStaticMeshActor* Mesh, UPhysicsConstraintComponent* Phys, UCableComponent* Cable)
+{
+
+
+	//Remove Things if exist and input is null
+	if(Mesh==nullptr && Meshes[LimbIndex] != nullptr)
+		Meshes[LimbIndex]->Destroy();
+	if(Cable==nullptr && CableComponents[LimbIndex] != nullptr)
+		CableComponents[LimbIndex]->DestroyComponent();
+	if(Phys==nullptr && PhysComponents[LimbIndex] != nullptr)
+		PhysComponents[LimbIndex]->DestroyComponent();
+
+	//Assign Things
+	Meshes[LimbIndex] = Mesh;
+	CableComponents[LimbIndex] = Cable;
+	PhysComponents[LimbIndex]=Phys;
+
+	
+}
+
+void UDismemberment::DeleteLimbRefs(int LimbIndex)
+{
+	
 }
 
 void UDismemberment::RecreateSkeletalPhysics()
