@@ -1,4 +1,6 @@
-﻿upperarm
+﻿arm
+leg
 thigh
 neck
 head
+shoulder

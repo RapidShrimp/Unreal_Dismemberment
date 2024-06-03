@@ -172,6 +172,8 @@ AStaticMeshActor* UDismemberment::SpawnMesh_Implementation(FVector Location, FRo
 //Spawn a Particle System
 UNiagaraComponent* UDismemberment::SpawnParticles_Implementation(FVector InLocation, FRotator InRotation)
 {
+	if(SkeletonData->ParticleSystem == nullptr)
+		return nullptr;
 	UNiagaraComponent* Particles=UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, GetOwner()->GetRootComponent(), NAME_None, InLocation, InRotation, EAttachLocation::Type::KeepWorldPosition, true);
 	Particles->AttachToComponent(GetOwner()->GetRootComponent(),FAttachmentTransformRules::KeepWorldTransform);
 	OnSpawnParticles.Broadcast(InLocation,InRotation);
@@ -293,6 +295,8 @@ void UDismemberment::EvaluateLimbs(int& Arms, int& Legs, int& Heads, int& Other)
 {
 	for (FLimbGroupData Limb : Limbs)
 	{
+		if(Limb.CurrentHealth<=0)
+			continue;
 		switch (Limb.LimbType)
 		{
 		case E_LimbTypes::Arms:
