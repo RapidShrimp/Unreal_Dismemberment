@@ -7,17 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8cd76d73-756f-42ab-a524-99e55638f1d0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/DataAssets/UE4_Manny.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/DataAssets/UE_4Manny.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Test/Example/DefaultCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/Example/DefaultCharacter.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Maps/ThirdPersonMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ThirdPerson/Maps/ThirdPersonMap.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/9/1F/01Z1S3Y18UXTYU77JQEL1E.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/A/7T/N2NYKATURVG1MG07QHCC6H.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/A/7T/N2NYKATURVG1MG07QHCC6H.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/Dismemberment.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/Dismemberment.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/Substrings/ValidBoneSubstrings.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/Substrings/ValidBoneSubstrings.txt" afterDir="false" />
-    </list>
+    <list default="true" id="8cd76d73-756f-42ab-a524-99e55638f1d0" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -192,7 +182,7 @@
       <workItem from="1716903935726" duration="7357000" />
       <workItem from="1716919888262" duration="1149000" />
       <workItem from="1716984683993" duration="13757000" />
-      <workItem from="1717436319427" duration="3342000" />
+      <workItem from="1717436319427" duration="3622000" />
     </task>
     <servers />
   </component>
