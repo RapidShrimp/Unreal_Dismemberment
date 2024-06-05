@@ -77,7 +77,7 @@ void UDismemberment::Handle_OnLimbSevered(FLimbGroupData Limb)
 	FVector BoneDir = BoneTrans.GetLocation() - GetBoneParentTransform(Limb.LimbRootName).GetLocation();
 	FRotator BoneRot = FRotationMatrix::MakeFromX(BoneDir).Rotator();
 	
-	UNiagaraComponent* Particles = SpawnParticles(BoneTrans.GetLocation(),BoneRot);
+	UNiagaraComponent* Particles = SpawnParticles(BoneTrans.GetLocation(),BoneRot,Limb.LimbRootName);
 	AStaticMeshActor* Mesh = SpawnMesh(BoneTrans.GetLocation(),SkeleMesh->GetRelativeRotation(),Limb);
 
 	int Index = GetLimbIndexFromBoneName(Limb.LimbRootName);
@@ -95,7 +95,7 @@ void UDismemberment::Handle_OnLimbRemoved(FLimbGroupData Limb)
 	FRotator BoneRot = FRotationMatrix::MakeFromX(BoneDir).Rotator();
 
 	AStaticMeshActor* SpawnedMesh = SpawnMesh(BoneTrans.GetLocation(),SkeleMesh->GetRelativeRotation(),Limb);
-	UNiagaraComponent* Particles = SpawnParticles(BoneTrans.GetLocation(),BoneRot);
+	UNiagaraComponent* Particles = SpawnParticles(BoneTrans.GetLocation(),BoneRot,Limb.LimbRootName);
 	UPhysicsConstraintComponent* PhysComp = nullptr;
 	UCableComponent* Cable = nullptr;
 	
@@ -129,6 +129,7 @@ void UDismemberment::Handle_OnLimbRepaired(FLimbGroupData Limb)
 		if(SkeleMesh->IsBoneHidden(SkeleMesh->GetBoneIndex(SearchLimb.LimbRootName))){}
 			SkeleMesh->TermBodiesBelow(SearchLimb.LimbRootName);
 	}
+	
 }
 
 //Repair all limbs, this is cheaper than OnLimbRepaired
@@ -142,6 +143,7 @@ void UDismemberment::RepairAllLimbs()
 		SkeleMesh->UnHideBoneByName(Limbs[i].LimbRootName);
 		UpdateLimbRefs(i,nullptr,nullptr,nullptr);
 	}
+	OnLimbRepaired.Broadcast(Limbs[0]);
 	RecreateSkeletalPhysics();
 }
 
@@ -156,26 +158,28 @@ AStaticMeshActor* UDismemberment::SpawnMesh_Implementation(FVector Location, FRo
 	LimbMesh->SetMobility(EComponentMobility::Movable);
 	LimbMesh->SetActorLocation(Location);
 	LimbMesh->SetActorRotation(SkeleMesh->GetRelativeRotation());
-	UStaticMeshComponent* MeshComponent = LimbMesh->GetStaticMeshComponent();
-	if(MeshComponent)
+	UStaticMeshComponent* MeshComp = LimbMesh->GetStaticMeshComponent();
+	if(MeshComp)
 	{
-		MeshComponent->SetStaticMesh(Limb.Mesh);
-		MeshComponent->SetSimulatePhysics(true);
-		MeshComponent->RegisterComponent();
-		MeshComponent->SetLinearDamping(4);
-		MeshComponent->SetAngularDamping(2);
+		MeshComp->SetStaticMesh(Limb.Mesh);
+		MeshComp->SetCollisionProfileName("Spectator");
+		MeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		MeshComp->SetCollisionObjectType(ECC_WorldStatic);
+		MeshComp->SetSimulatePhysics(true);
+	
 	}
 	OnLimbSpawned.Broadcast(Location,Rotation,Limb);
 	return LimbMesh;
 }
 
 //Spawn a Particle System
-UNiagaraComponent* UDismemberment::SpawnParticles_Implementation(FVector InLocation, FRotator InRotation)
+UNiagaraComponent* UDismemberment::SpawnParticles_Implementation(FVector InLocation, FRotator InRotation, FName Socket)
 {
 	if(SkeletonData->ParticleSystem == nullptr)
 		return nullptr;
 	UNiagaraComponent* Particles=UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, GetOwner()->GetRootComponent(), NAME_None, InLocation, InRotation, EAttachLocation::Type::KeepWorldPosition, true);
-	Particles->AttachToComponent(GetOwner()->GetRootComponent(),FAttachmentTransformRules::KeepWorldTransform);
+	Particles->AttachToComponent(SkeleMesh,FAttachmentTransformRules::KeepWorldTransform,Socket);
+
 	OnSpawnParticles.Broadcast(InLocation,InRotation);
 	GetOwner()->AddInstanceComponent(Particles);
 	return Particles;
@@ -191,6 +195,8 @@ UPhysicsConstraintComponent* UDismemberment::SpawnPhysicsTether_Implementation(A
 	MeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	MeshComp->SetCollisionObjectType(ECC_WorldStatic);
 	MeshComp->SetSimulatePhysics(true);
+	MeshComp->SetLinearDamping(4);
+	MeshComp->SetAngularDamping(2);
 
 	//Setup Cable Component Attachments
 	FTransform SocketTransform = SkeleMesh->GetSocketTransform(Limb.LimbRootName,RTS_World);
@@ -199,13 +205,22 @@ UPhysicsConstraintComponent* UDismemberment::SpawnPhysicsTether_Implementation(A
 	//Setup Physics Constraint
 	FString CompName = "CableComp" + Limb.LimbRootName.ToString();
 
+	FAttachmentTransformRules Rules = {EAttachmentRule::SnapToTarget,true};
+	Rules.RotationRule = EAttachmentRule::KeepRelative;
+	Rules.ScaleRule = EAttachmentRule::KeepWorld;
+	
 	UPhysicsConstraintComponent* PhysicsComp = NewObject<UPhysicsConstraintComponent>(this,UPhysicsConstraintComponent::StaticClass());
 	if(PhysicsComp)
 	{
 		SocketTransform.Rotator() = SkeleMesh->GetRelativeRotation();
-		PhysicsComp->SetupAttachment(SkeleMesh,Limb.LimbRootName);
-		PhysicsComp->ConstraintActor1 = GetOwner();
+		
+		PhysicsComp->AttachToComponent(SkeleMesh,Rules,Limb.LimbRootName);
 		PhysicsComp->ConstraintActor2 = MeshToAttach;
+		PhysicsComp->ConstraintActor1 = GetOwner();
+		//PhysicsComp->SetConstrainedComponents(SkeleMesh,Limb.LimbRootName,MeshToAttach->GetStaticMeshComponent(),"");
+		
+
+
 		//Physics Setup- Convert Data to editable Struct??
 		PhysicsComp->SetAngularSwing1Limit(ACM_Limited,15);
 		PhysicsComp->SetAngularSwing2Limit(ACM_Limited,25);

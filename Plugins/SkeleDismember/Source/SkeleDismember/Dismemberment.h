@@ -82,7 +82,7 @@ protected:
 	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
 	AStaticMeshActor* SpawnMesh(FVector Location, FRotator Rotation, FLimbGroupData Limb);
 	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
-	UNiagaraComponent* SpawnParticles(FVector InLocation, FRotator InRotation);
+	UNiagaraComponent* SpawnParticles(FVector InLocation, FRotator InRotation, FName Socket);
 
 	UFUNCTION(BlueprintNativeEvent,Category = "Dismemberment")
 	UPhysicsConstraintComponent* SpawnPhysicsTether(AStaticMeshActor* MeshToAttach,FLimbGroupData Limb);
