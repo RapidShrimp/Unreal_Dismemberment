@@ -215,11 +215,13 @@ UPhysicsConstraintComponent* UDismemberment::SpawnPhysicsTether_Implementation(A
 		SocketTransform.Rotator() = SkeleMesh->GetRelativeRotation();
 		
 		PhysicsComp->AttachToComponent(SkeleMesh,Rules,Limb.LimbRootName);
-		PhysicsComp->ConstraintActor2 = MeshToAttach;
-		PhysicsComp->ConstraintActor1 = GetOwner();
-		//PhysicsComp->SetConstrainedComponents(SkeleMesh,Limb.LimbRootName,MeshToAttach->GetStaticMeshComponent(),"");
-		
 
+		//PhysicsComp->ConstraintActor1 = GetOwner();
+		PhysicsComp->OverrideComponent1 = SkeleMesh;
+		PhysicsComp->ComponentName1.ComponentName = SkeleMesh.GetFName();
+		PhysicsComp->ConstraintActor2 = MeshToAttach;
+		PhysicsComp->InitComponentConstraint();
+		//PhysicsComp->SetConstrainedComponents(SkeleMesh,Limb.LimbRootName,MeshToAttach->GetStaticMeshComponent(),"");
 
 		//Physics Setup- Convert Data to editable Struct??
 		PhysicsComp->SetAngularSwing1Limit(ACM_Limited,15);
