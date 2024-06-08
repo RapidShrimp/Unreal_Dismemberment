@@ -16,12 +16,12 @@ UDismemberment::UDismemberment()
 
 }
 
-//Find Skeletal Mesh to Allow Dismemberment
-void UDismemberment::BeginPlay()
+void UDismemberment::Init()
 {
 	SkeleMesh = GetOwner()->FindComponentByClass<USkeletalMeshComponent>();
 	if(!SkeleMesh)
 		return;
+	UE_LOG(LogTemp,Display,TEXT("SkeleMesh Found"));
 	
 	InitialiseBones();
 }
@@ -39,6 +39,7 @@ void UDismemberment::InitialiseBones()
 	PhysComponents.SetNum(Size);
 	CableComponents.SetNum(Size);
 	Meshes.SetNum(Size);
+	UE_LOG(LogTemp,Display,TEXT("Bones Init"));
 }
 
 void UDismemberment::Handle_LimbHit(FName HitBoneName, float Damage)
@@ -46,28 +47,32 @@ void UDismemberment::Handle_LimbHit(FName HitBoneName, float Damage)
 	int LimbIndex = GetLimbIndexFromBoneName(HitBoneName);
 	
 	if(LimbIndex == -1 || Limbs[LimbIndex].HasDetached)
+	{
+		UE_LOG(LogTemp,Error,TEXT("COULD NOT FIND BONE INDEX OR IS ALREADY DETACHED"));
 		return;
+	}
 
 	//Take Damage to the Limb & Check if its hit 0
 	FMath::Clamp(Limbs[LimbIndex].CurrentHealth -= Damage,0,Limbs[LimbIndex].CurrentHealth);
-	if(!Limbs[LimbIndex].CurrentHealth == 0)
-		return;
+	if(Limbs[LimbIndex].CurrentHealth <= 0)
+	{
 
-	SkeleMesh->HideBoneByName(Limbs[LimbIndex].LimbRootName,PBO_Term);
+		SkeleMesh->HideBoneByName(Limbs[LimbIndex].LimbRootName,PBO_Term);
 	
-	//Detach Limb Forever if MAX repairs Reached
-	if(Limbs[LimbIndex].CurrentRepairs >= Limbs[LimbIndex].MaxRepairs)
-	{
-		Handle_OnLimbSevered(Limbs[LimbIndex]);
-		OnLimbSevered.Broadcast(Limbs[LimbIndex]);
-	}
-	else
-	{
-		Handle_OnLimbRemoved(Limbs[LimbIndex]);
-		OnLimbRemoved.Broadcast(Limbs[LimbIndex]);
-	}
-	Limbs[LimbIndex].HasDetached = true;
+		//Detach Limb Forever if MAX repairs Reached
+		if(Limbs[LimbIndex].CurrentRepairs >= Limbs[LimbIndex].MaxRepairs)
+		{
+			Handle_OnLimbSevered(Limbs[LimbIndex]);
+			OnLimbSevered.Broadcast(Limbs[LimbIndex]);
+		}
+		else
+		{
+			Handle_OnLimbRemoved(Limbs[LimbIndex]);
+			OnLimbRemoved.Broadcast(Limbs[LimbIndex]);
+		}
+		Limbs[LimbIndex].HasDetached = true;
 	
+	}
 }
 
 //When the Limb has been severed and can no longer be repaired
@@ -82,7 +87,10 @@ void UDismemberment::Handle_OnLimbSevered(FLimbGroupData Limb)
 
 	int Index = GetLimbIndexFromBoneName(Limb.LimbRootName);
 	if(Index ==-1)
+	{
+		UE_LOG(LogTemp,Error,TEXT("COULDNT FIND LIMB INDEX"));
 		return;
+	}
 	UpdateLimbRefs(Index,Mesh,nullptr,nullptr);
 
 }
@@ -107,7 +115,10 @@ void UDismemberment::Handle_OnLimbRemoved(FLimbGroupData Limb)
 
 	int Index = GetLimbIndexFromBoneName(Limb.LimbRootName);
 	if(Index ==-1)
+	{
+		UE_LOG(LogTemp,Error,TEXT("COULD NOT FIND LIMB INDEX"));
 		return;
+	}
 	UpdateLimbRefs(Index,SpawnedMesh,PhysComp,Cable);
 }
 
@@ -151,7 +162,10 @@ void UDismemberment::RepairAllLimbs()
 AStaticMeshActor* UDismemberment::SpawnMesh_Implementation(FVector Location, FRotator Rotation,FLimbGroupData Limb)
 {
 	if(Limb.Mesh == nullptr)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("NO MESH, RETURNING"));
 		return nullptr;
+	}
 
 	//Create static mesh and spawn at Bone socket (Pre baked mesh)
 	AStaticMeshActor* LimbMesh = GetWorld()->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass());
@@ -176,7 +190,10 @@ AStaticMeshActor* UDismemberment::SpawnMesh_Implementation(FVector Location, FRo
 UNiagaraComponent* UDismemberment::SpawnParticles_Implementation(FVector InLocation, FRotator InRotation, FName Socket)
 {
 	if(SkeletonData->ParticleSystem == nullptr)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("NO PARTICLE SYSTEM"));
 		return nullptr;
+	}
 	UNiagaraComponent* Particles=UNiagaraFunctionLibrary::SpawnSystemAttached(SkeletonData->ParticleSystem, GetOwner()->GetRootComponent(), NAME_None, InLocation, InRotation, EAttachLocation::Type::KeepWorldPosition, true);
 	Particles->AttachToComponent(SkeleMesh,FAttachmentTransformRules::KeepWorldTransform,Socket);
 
@@ -256,6 +273,8 @@ UCableComponent* UDismemberment::SpawnCableTether_Implementation(AStaticMeshActo
 
 		if(SkeletonData->CableMaterial != nullptr)
 			CableTether->SetMaterial(0,SkeletonData->CableMaterial);
+		else
+			UE_LOG(LogTemp,Warning,TEXT("NO CALBE MATERIAL"));
 	}
 	return CableTether;
 }

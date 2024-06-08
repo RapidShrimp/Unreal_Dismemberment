@@ -32,8 +32,6 @@ public:
 	UDismemberment();
 
 protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
 	
 	//Delegates
 	UPROPERTY(BlueprintAssignable,Category = "Dismemberment")
@@ -63,6 +61,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Dismemberment")
 	TObjectPtr<USkeletonDataAsset> SkeletonData;
 
+	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
+	void Init();
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	void InitialiseBones();
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
