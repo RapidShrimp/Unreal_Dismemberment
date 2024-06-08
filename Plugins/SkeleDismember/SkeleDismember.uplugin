@@ -19,9 +19,22 @@
 			"Name": "SkeleDismember",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"WhitelistPlatforms": ["Win64"]
+			"PlatformAllowList": [
+				"Win64"
+			]
 		}
 	],
-	"PlatformAllowList": ["Win64"]
-	
+	"PlatformAllowList": [
+		"Win64"
+	],
+	"Plugins": [
+		{
+			"Name": "Niagara",
+			"Enabled": true
+		},
+		{
+			"Name": "CableComponent",
+			"Enabled": true
+		}
+	]
 }

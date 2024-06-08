@@ -3,17 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
 #include "Structs/LimbGroupData.h"
 #include "Dismemberment.generated.h"
 
+class USkeletonDataAsset;
+class USkeletalMeshComponent;
+class USkeletalMesh;
+class AStaticMeshActor;
 class UCableComponent;
 class UPhysicsConstraintComponent;
-class USphereComponent;
-class AStaticMeshActor;
-struct FLimbGroupData;
 class UNiagaraComponent;
-class USkeletonDataAsset;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbRemoved,FLimbGroupData,Limb);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbSevered,FLimbGroupData,Limb);
@@ -93,8 +92,8 @@ protected:
 	int GetLimbIndexFromBoneName(FName Bone);
 	void UpdateLimbRefs(int LimbIndex, AStaticMeshActor* Mesh, UPhysicsConstraintComponent* Phys, UCableComponent* Cable);
 	
-	FTransform GetLimbTransform(FName BoneName) {return SkeleMesh->GetBoneTransform(SkeleMesh->GetBoneIndex(BoneName));}
-	FTransform GetBoneParentTransform(FName BoneName) {return GetLimbTransform(SkeleMesh->GetParentBone(BoneName));}
+	FTransform GetLimbTransform(FName BoneName) const {return SkeleMesh->GetBoneTransform(SkeleMesh->GetBoneIndex(BoneName));}
+	FTransform GetBoneParentTransform(FName BoneName) const {return GetLimbTransform(SkeleMesh->GetParentBone(BoneName));}
 
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	void EvaluateLimbs(int& Arms, int& Legs, int& Heads, int& Other);

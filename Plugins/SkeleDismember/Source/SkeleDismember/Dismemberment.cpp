@@ -3,12 +3,13 @@
 
 #include "Dismemberment.h"
 
+
+#include "SkeletonDataAsset.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "CableComponent.h"
 #include "NiagaraFunctionLibrary.h"
-#include "SkeletonDataAsset.h"
 #include "Engine/StaticMeshActor.h"
 #include "PhysicsEngine/PhysicsConstraintComponent.h"
-
 
 // Sets default values for this component's properties
 UDismemberment::UDismemberment()

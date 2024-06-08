@@ -9,18 +9,13 @@
   <component name="ChangeListManager">
     <list default="true" id="8cd76d73-756f-42ab-a524-99e55638f1d0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/DataAssets/Manny_UE4.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/DataAssets/Manny_UE4.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Maps/ThirdPersonMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ThirdPerson/Maps/ThirdPersonMap.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/1/42/XV9J8M2TV39FYWJPEIR95D.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/1/42/XV9J8M2TV39FYWJPEIR95D.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/1/AZ/A7GPT109Y6ZTTJD4A7TXER.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/1/AZ/A7GPT109Y6ZTTJD4A7TXER.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/5/WE/LN8Q00ASDEIVWTJNOKF95S.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/5/WE/LN8Q00ASDEIVWTJNOKF95S.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/6/J7/N10XDC9G27EMLS5AGZ6AVV.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/6/J7/N10XDC9G27EMLS5AGZ6AVV.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/7/X6/WUEK2XJJYHDWBDU3QTWVV0.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/7/X6/WUEK2XJJYHDWBDU3QTWVV0.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/A/7T/N2NYKATURVG1MG07QHCC6H.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/A/7T/N2NYKATURVG1MG07QHCC6H.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/SkeleDismember.uplugin" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismember/SkeleDismember.uplugin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/DismbembermentCharacter.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/DismbembermentCharacter.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/Dismemberment.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/Dismemberment.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/Dismemberment.h" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/Dismemberment.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/SkeleDismember.Build.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/SkeleDismember.Build.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/SkeletonDataAsset.h" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/SkeletonDataAsset.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/DismembermentSKMComponent.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/DismembermentSKMComponent.h" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +29,7 @@
     <setting file="file://$PROJECT_DIR$/Plugins/SkeleDismember/SkeleDismember.uplugin" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/Dismemberment.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/Dismemberment.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/SkeleDismember.Build.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/SkeleDismember.Build.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismember/SkeletonDataAsset.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Plugins/SkeleDismemberEditor/SkeleDismemberEditor.uplugin" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/SkeleDismemberEditor.Build.cs" root0="FORCE_HIGHLIGHTING" />
@@ -166,6 +161,7 @@
       <workItem from="1717620977514" duration="8352000" />
       <workItem from="1717694419215" duration="5461000" />
       <workItem from="1717861569837" duration="3844000" />
+      <workItem from="1717865861236" duration="1271000" />
     </task>
     <servers />
   </component>
