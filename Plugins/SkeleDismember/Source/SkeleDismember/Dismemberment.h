@@ -3,18 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CableComponent.h"
+#include "NiagaraComponent.h"
+#include "Engine/StaticMeshActor.h"
+#include "PhysicsEngine/PhysicsConstraintComponent.h"
 #include "Structs/LimbGroupData.h"
+#include "SkeletonDataAsset.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Dismemberment.generated.h"
 
-class USkeletonDataAsset;
-class USkeletalMeshComponent;
-class USkeletalMesh;
-class AStaticMeshActor;
-class UCableComponent;
-class UPhysicsConstraintComponent;
-class UNiagaraComponent;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbRemoved,FLimbGroupData,Limb);
+
+class USkeletonDataAsset;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbRemoved, FLimbGroupData, Limb);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbSevered,FLimbGroupData,Limb);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbRepaired,FLimbGroupData,Limb);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnSpawnParticles,FVector, InLocation, FRotator, InRotation);

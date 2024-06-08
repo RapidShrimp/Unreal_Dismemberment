@@ -25,7 +25,7 @@ public class SkeleDismember : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core", "CoreUObject", "Engine", "InputCore","Niagara","CableComponent", "UMG","Niagara","CableComponent"
+				"Core", "CoreUObject", "Engine", "InputCore","CableComponent","Niagara","CableComponent"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

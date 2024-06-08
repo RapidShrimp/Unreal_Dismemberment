@@ -6,6 +6,8 @@
 #include "Engine/DataAsset.h"
 #include "Structs/LimbGroupData.h"
 #include "NiagaraComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Materials/MaterialInstance.h"
 #include "SkeletonDataAsset.generated.h"
 
 
