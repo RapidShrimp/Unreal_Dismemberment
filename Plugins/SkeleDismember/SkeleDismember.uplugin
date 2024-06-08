@@ -22,6 +22,11 @@
 			"PlatformAllowList": [
 				"Win64"
 			]
+		},
+		{
+			"Name": "SkeleDismemberEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
 		}
 	],
 	"PlatformAllowList": [
