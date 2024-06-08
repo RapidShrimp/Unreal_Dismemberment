@@ -35,10 +35,10 @@ protected:
 
 	//Substrings
 	UPROPERTY(BlueprintReadOnly, Category = "Dismemberment")
-	FString ValidSubstrFilepath = "E:/University/Personal Projects/Stealth/Unreal_Dismemberment/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/Substrings/ValidBoneSubstrings.txt";
+	FString ValidSubstrFilepath = "E:/University/Personal Projects/Stealth/Unreal_Dismemberment/Plugins/SkeleDismember/Source/SkeleDismemberEditor/Substrings/ValidBoneSubstrings.txt";
 
 	UPROPERTY(BlueprintReadOnly, Category = "Dismemberment")
-	FString InvalidSubstrFilepath = "E:/University/Personal Projects/Stealth/Unreal_Dismemberment/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/Substrings/InValidBoneSubstrings.txt";
+	FString InvalidSubstrFilepath = "E:/University/Personal Projects/Stealth/Unreal_Dismemberment/Plugins/SkeleDismember/Source/SkeleDismemberEditor/Substrings/InValidBoneSubstrings.txt";
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dismemberment")
     TArray<FString> ValidNameSubstrings;

@@ -9,18 +9,10 @@
   <component name="ChangeListManager">
     <list default="true" id="8cd76d73-756f-42ab-a524-99e55638f1d0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DismembermentDemo.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismemberEditor/Source/DismembermentBoneSetup.h" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/SkeleDismember/Source/SkeleDismemberEditor/Source/DismembermentBoneSetup.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Content/EUW_BoneSetup.uasset" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Content/WBP_CustomListButton.uasset" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Content/WBP_ListButton.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Resources/Icon128.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/SkeleDismemberEditor.uplugin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/Private/SkeleDismemberEditor.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/Public/SkeleDismemberEditor.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/SkeleDismemberEditor.Build.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/Source/DismembermentBoneSetup.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/Source/DismembermentBoneSetup.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/Substrings/InValidBoneSubstrings.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/SkeleDismemberEditor/Source/SkeleDismemberEditor/Substrings/ValidBoneSubstrings.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -178,6 +170,7 @@
       <workItem from="1717880390848" duration="240000" />
       <workItem from="1717880656590" duration="852000" />
       <workItem from="1717881528880" duration="568000" />
+      <workItem from="1717882122182" duration="1708000" />
     </task>
     <servers />
   </component>
