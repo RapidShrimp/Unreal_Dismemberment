@@ -58,7 +58,7 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, Category = "Dismemberment")
 	TArray<FLimbGroupData> Limbs;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Dismemberment")
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Dismemberment")
 	TObjectPtr<USkeletalMeshComponent> SkeleMesh;
 	UPROPERTY(EditAnywhere, Category = "Dismemberment")
 	TObjectPtr<USkeletonDataAsset> SkeletonData;
@@ -92,7 +92,6 @@ protected:
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	int GetLimbIndexFromBoneName(FName Bone);
 	void UpdateLimbRefs(int LimbIndex, AStaticMeshActor* Mesh, UPhysicsConstraintComponent* Phys, UCableComponent* Cable);
-	void DeleteLimbRefs(int LimbIndex);
 	
 	FTransform GetLimbTransform(FName BoneName) {return SkeleMesh->GetBoneTransform(SkeleMesh->GetBoneIndex(BoneName));}
 	FTransform GetBoneParentTransform(FName BoneName) {return GetLimbTransform(SkeleMesh->GetParentBone(BoneName));}

@@ -224,9 +224,9 @@ UPhysicsConstraintComponent* UDismemberment::SpawnPhysicsTether_Implementation(A
 		//PhysicsComp->SetConstrainedComponents(SkeleMesh,Limb.LimbRootName,MeshToAttach->GetStaticMeshComponent(),"");
 
 		//Physics Setup- Convert Data to editable Struct??
-		PhysicsComp->SetAngularSwing1Limit(ACM_Limited,15);
-		PhysicsComp->SetAngularSwing2Limit(ACM_Limited,25);
-		PhysicsComp->SetAngularTwistLimit(ACM_Limited,50);
+		PhysicsComp->SetAngularSwing1Limit(ACM_Limited,25);
+		PhysicsComp->SetAngularSwing2Limit(ACM_Limited,45);
+		PhysicsComp->SetAngularTwistLimit(ACM_Limited,60);
 
 		PhysicsComp->SetLinearXLimit(LCM_Limited,5);
 		PhysicsComp->SetLinearZLimit(LCM_Limited,SkeletonData->TetherLength-10.0f);
@@ -253,6 +253,9 @@ UCableComponent* UDismemberment::SpawnCableTether_Implementation(AStaticMeshActo
 		CableTether->SetAttachEndToComponent(MeshToAttach->GetStaticMeshComponent(),"None");
 		GetOwner()->AddInstanceComponent(CableTether);
 		GetOwner()->FinishAndRegisterComponent(CableTether);
+
+		if(SkeletonData->CableMaterial != nullptr)
+			CableTether->SetMaterial(0,SkeletonData->CableMaterial);
 	}
 	return CableTether;
 }
@@ -295,11 +298,6 @@ void UDismemberment::UpdateLimbRefs(int LimbIndex, AStaticMeshActor* Mesh, UPhys
 	
 }
 
-void UDismemberment::DeleteLimbRefs(int LimbIndex)
-{
-	
-}
-
 void UDismemberment::RecreateSkeletalPhysics()
 {
 	//Remove ALL skeletal bones and recreate them - EXPENSIVE, use at own performance risk.
@@ -332,4 +330,10 @@ void UDismemberment::EvaluateLimbs(int& Arms, int& Legs, int& Heads, int& Other)
 			break;
 		}
 	}
+
+	if(SkeletonData->OverrideArms != 0)
+		Arms = SkeletonData->OverrideArms;
+
+	if(SkeletonData->OverrideLegs != 0)
+		Legs = SkeletonData->OverrideLegs;
 }
