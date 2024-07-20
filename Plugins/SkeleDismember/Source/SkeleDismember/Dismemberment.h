@@ -3,19 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
+#include "CableComponent.h"
+#include "NiagaraComponent.h"
+#include "Engine/StaticMeshActor.h"
+#include "PhysicsEngine/PhysicsConstraintComponent.h"
 #include "Structs/LimbGroupData.h"
+#include "SkeletonDataAsset.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Dismemberment.generated.h"
 
-class UCableComponent;
-class UPhysicsConstraintComponent;
-class USphereComponent;
-class AStaticMeshActor;
-struct FLimbGroupData;
-class UNiagaraComponent;
-class USkeletonDataAsset;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbRemoved,FLimbGroupData,Limb);
+
+class USkeletonDataAsset;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbRemoved, FLimbGroupData, Limb);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbSevered,FLimbGroupData,Limb);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLimbRepaired,FLimbGroupData,Limb);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnSpawnParticles,FVector, InLocation, FRotator, InRotation);
@@ -32,8 +32,6 @@ public:
 	UDismemberment();
 
 protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
 	
 	//Delegates
 	UPROPERTY(BlueprintAssignable,Category = "Dismemberment")
@@ -58,11 +56,13 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, Category = "Dismemberment")
 	TArray<FLimbGroupData> Limbs;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Dismemberment")
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Dismemberment")
 	TObjectPtr<USkeletalMeshComponent> SkeleMesh;
 	UPROPERTY(EditAnywhere, Category = "Dismemberment")
 	TObjectPtr<USkeletonDataAsset> SkeletonData;
 
+	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
+	void Init();
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	void InitialiseBones();
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
@@ -92,10 +92,9 @@ protected:
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	int GetLimbIndexFromBoneName(FName Bone);
 	void UpdateLimbRefs(int LimbIndex, AStaticMeshActor* Mesh, UPhysicsConstraintComponent* Phys, UCableComponent* Cable);
-	void DeleteLimbRefs(int LimbIndex);
 	
-	FTransform GetLimbTransform(FName BoneName) {return SkeleMesh->GetBoneTransform(SkeleMesh->GetBoneIndex(BoneName));}
-	FTransform GetBoneParentTransform(FName BoneName) {return GetLimbTransform(SkeleMesh->GetParentBone(BoneName));}
+	FTransform GetLimbTransform(FName BoneName) const {return SkeleMesh->GetBoneTransform(SkeleMesh->GetBoneIndex(BoneName));}
+	FTransform GetBoneParentTransform(FName BoneName) const {return GetLimbTransform(SkeleMesh->GetParentBone(BoneName));}
 
 	UFUNCTION(BlueprintCallable,Category = "Dismemberment")
 	void EvaluateLimbs(int& Arms, int& Legs, int& Heads, int& Other);
