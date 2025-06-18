@@ -4,7 +4,9 @@ C++ & Blueprint
 > [!WARNING]
 > This Project was created in 2 weeks, as such will contain potential bugs and errors. Support is still avaliable if required, submit an issue.
 
-[![SkeletalDismemberment](Resources/SkeletalDismemberment.jpg)](https://youtu.be/GrP-dirN9D4)
+[![SkeletalDismemberment](Resources/SkeletalDismemberment.png)](https://youtu.be/GrP-dirN9D4)
+Demo Video (https://youtu.be/GrP-dirN9D4)
+
 
 ## What is Skeletal Dismemberment
 
@@ -18,11 +20,7 @@ The action of cutting off a person's or animal's limbs.<br/>
 
 This plugin mimics limb severance with a minimal gore level by spawning limbs and particle VFX on seperation.
 
-## How does it work?
-
-This plugin works by using a tool to make presets for a skeleton using seperated static meshes and spawning them in at the location and rotation of the old limb.
-
-## Potential future improvements
+## [OLD] Potential future improvements
 > [!NOTE]
 > There will be no further developments to this project, but the old planned list of features can be seen below
 
